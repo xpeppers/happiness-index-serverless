@@ -1,1 +1,1 @@
-# -happiness-index-serverless
+# happiness-index-serverless
