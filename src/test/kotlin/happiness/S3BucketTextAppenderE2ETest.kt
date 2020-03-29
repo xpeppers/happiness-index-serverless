@@ -16,17 +16,17 @@ class S3BucketTextAppenderE2ETest {
     @Disabled("WIP: e2e template")
     @Test
     internal fun `http calls should append the body message to s3 bucket`() {
-        post(URL, """{"message":"prova1"}""")
+        post(URL, """{"message":"1"}""")
         val firstBucketContent = getBucketContent()
 
         assertThat(firstBucketContent)
-            .isEqualTo("prova1")
+            .isEqualTo("1")
 
-        post(URL, """{"message":"prova2"}""")
+        post(URL, """{"message":"2"}""")
         val secondBucketContent = getBucketContent()
 
         assertThat(secondBucketContent)
-            .isEqualTo("prova1\nprova2")
+            .isEqualTo("1\n2")
     }
 
     private fun getBucketContent(): String {
