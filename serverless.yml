@@ -11,13 +11,13 @@ provider:
 
 functions:
   home:
-    handler: vegetables.VegetablesHandler
+    handler: happiness.HappinessHandler
     events:
       - http:
           path: /
           method: ANY
   other:
-    handler: vegetables.VegetablesHandler
+    handler: happiness.HappinessHandler
     events:
       - http:
           path: /{proxy+}
