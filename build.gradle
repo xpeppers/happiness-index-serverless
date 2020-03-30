@@ -5,7 +5,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
-group = 'vegetables'
+group = 'happiness-index'
 version = 'dev'
 
 sourceCompatibility = 11

@@ -1,4 +1,4 @@
-package happiness
+package happiness.infrastructure
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 
-class S3BucketTextAppenderE2ETest {
+class VotesOnS3E2ETest {
 
     @BeforeEach
     internal fun setUp() {

@@ -1,10 +1,12 @@
-package happiness
+package happiness.infrastructure
 
 import daikon.lambda.HttpHandler
+import happiness.addvote.HappinessVoteUseCase
+import happiness.addvote.Votes
 
 val happinessVoteUseCase = HappinessVoteUseCase(
-    object : TextAppender {
-        override fun append(text: String) {
+    object : Votes {
+        override fun add(text: String) {
             println(text)
         }
     }

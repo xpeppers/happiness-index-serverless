@@ -1,7 +1,7 @@
-service: vegetables-lambda
+service: happiness-index
 
 package:
-  artifact: build/libs/vegetables-lambda-dev-all.jar
+  artifact: build/libs/happiness-index-dev-all.jar
 
 provider:
   name: aws
@@ -11,19 +11,14 @@ provider:
 
 functions:
   home:
-    handler: happiness.HappinessHandler
+    handler: happiness.infrastructure.HappinessHandler
     events:
       - http:
           path: /
           method: ANY
   other:
-    handler: happiness.HappinessHandler
+    handler: happiness.infrastructure.HappinessHandler
     events:
       - http:
           path: /{proxy+}
           method: ANY
-#      - alb:
-#          listenerArn: arn:aws:elasticloadbalancing:eu-west-1:xxxxxx:listener/app/xxxxxxxx/xxxxxx/xxxxx
-#          priority: 1
-#          conditions:
-#            path: /vegetables/*

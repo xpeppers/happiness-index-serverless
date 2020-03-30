@@ -1,4 +1,4 @@
-package happiness
+package happiness.infrastructure
 
 import io.restassured.RestAssured.post
 import org.assertj.core.api.Assertions.assertThat
@@ -9,7 +9,7 @@ class HappinessHandlerTestIT {
 
     @Test
     fun `route respond correctly`() {
-        val response = post("$URL/1")
+        val response = post("$URL/happiness/1")
             .then()
             .statusCode(201)
             .extract()
@@ -19,6 +19,6 @@ class HappinessHandlerTestIT {
     }
 
     companion object {
-        private const val URL = "https://qxzc0sz9i8.execute-api.eu-west-1.amazonaws.com/dev/happiness"
+        private const val URL = "https://8y4rzbgztl.execute-api.eu-west-1.amazonaws.com/dev"
     }
 }
