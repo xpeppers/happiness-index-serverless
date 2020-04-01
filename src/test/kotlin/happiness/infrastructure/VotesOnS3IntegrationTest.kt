@@ -33,29 +33,14 @@ class VotesOnS3IntegrationTest {
     fun reads_votes_from_s3() {
         VotesOnS3().add("aVote")
 
-        val votesBucket = readVotesFromBucket("happiness-index-dev", "votes")
+        val votesBucket = s3.readFromBucket("happiness-index-dev", "votes")
         assertThat(votesBucket).contains("aVote")
     }
 
     @Test
     fun can_read_from_s3_bucket() {
-        val votes = readVotesFromBucket("happiness-index-dev", "votes")
+        val votes = s3.readFromBucket("happiness-index-dev", "votes")
         assertThat(votes).isEqualTo("1")
-    }
-
-    private fun readVotesFromBucket(bucketName: String, key: String): String {
-        val objectRequest = GetObjectRequest.builder()
-            .bucket(bucketName)
-            .key(key)
-            .build()
-        return s3.getObject(objectRequest, ResponseTransformer.toBytes()).asString(UTF_8)
-    }
-
-    private fun S3Client.deleteBucket(bucketName: String, key: String) {
-        listBuckets().buckets().firstOrNull { it.name() == bucketName }?.let {
-            deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(key).build())
-            deleteBucket(DeleteBucketRequest.builder().bucket(bucketName).build())
-        }
     }
 
     private fun S3Client.createBucket(bucketName: String, key: String, value: String) {
@@ -67,6 +52,21 @@ class VotesOnS3IntegrationTest {
             .key(key)
             .build()
         putObject(putObjectRequest, RequestBody.fromString(value))
+    }
+
+    private fun S3Client.readFromBucket(bucketName: String, key: String): String {
+        val objectRequest = GetObjectRequest.builder()
+            .bucket(bucketName)
+            .key(key)
+            .build()
+        return getObject(objectRequest, ResponseTransformer.toBytes()).asString(UTF_8)
+    }
+
+    private fun S3Client.deleteBucket(bucketName: String, key: String) {
+        listBuckets().buckets().firstOrNull { it.name() == bucketName }?.let {
+            deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(key).build())
+            deleteBucket(DeleteBucketRequest.builder().bucket(bucketName).build())
+        }
     }
 
     companion object {
