@@ -1,16 +1,14 @@
 package happiness.infrastructure
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.*
 import java.nio.charset.Charset
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class VotesOnS3IntegrationTest {
 
     private val s3 by lazy {
