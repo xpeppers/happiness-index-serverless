@@ -22,7 +22,6 @@ dependencies {
 
     implementation platform('software.amazon.awssdk:bom:2.5.29')
     implementation 'software.amazon.awssdk:s3'
-    implementation 'software.amazon.awssdk:sts'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
 
     testImplementation group: 'io.mockk', name: 'mockk', version: '1.9.3'
