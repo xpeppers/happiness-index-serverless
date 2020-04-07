@@ -1,73 +1,67 @@
-package happiness.infrastructure
-
+import happiness.infrastructure.VotesOnS3
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import software.amazon.awssdk.core.sync.RequestBody
-import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.S3Client
-import software.amazon.awssdk.services.s3.model.*
-import java.nio.charset.Charset
+import software.amazon.awssdk.services.s3.model.CreateBucketRequest
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
+import software.amazon.awssdk.services.s3.model.GetObjectRequest
+import software.amazon.awssdk.services.s3.model.PutObjectRequest
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class VotesOnS3IntegrationTest {
 
-    private val s3 by lazy {
-        S3Client.create()
-    }
+    private val s3 by lazy { S3Client.create() }
 
     @BeforeEach
     fun setUp() {
-        s3.deleteBucket("happiness-index-dev", "votes")
-        s3.createBucket("happiness-index-dev", "votes", "1")
+        s3.createBucketIfNotExists(BUCKET_NAME)
+        s3.putObjectWithBody(BUCKET_NAME, FILE_NAME, "1\n2")
     }
 
     @AfterEach
     fun tearDown() {
-        s3.deleteBucket("happiness-index-dev", "votes")
+        s3.deleteBucketKey(BUCKET_NAME, FILE_NAME)
     }
 
     @Test
     @Disabled
-    fun reads_votes_from_s3() {
+    fun `reads votes from s3`() {
         VotesOnS3().add("aVote")
+        val votesBucket = s3.readFromBucket(BUCKET_NAME, FILE_NAME)
 
-        val votesBucket = s3.readFromBucket("happiness-index-dev", "votes")
         assertThat(votesBucket).contains("aVote")
     }
 
     @Test
-    fun can_read_from_s3_bucket() {
-        val votes = s3.readFromBucket("happiness-index-dev", "votes")
-        assertThat(votes).isEqualTo("1")
+    fun `can read from s3 bucket`() {
+        val votes = s3.readFromBucket(BUCKET_NAME, FILE_NAME)
+
+        assertThat(votes).containsExactly("1", "2")
     }
 
-    private fun S3Client.createBucket(bucketName: String, key: String, value: String) {
-        val createBucketRequest = CreateBucketRequest.builder().bucket(bucketName).build()
-        createBucket(createBucketRequest)
-
-        val putObjectRequest = PutObjectRequest.builder()
-            .bucket(bucketName)
-            .key(key)
-            .build()
-        putObject(putObjectRequest, RequestBody.fromString(value))
+    private fun S3Client.readFromBucket(bucketName: String, keyName: String): List<String> {
+        val responseInputStream =
+            getObject(GetObjectRequest.builder().bucket(bucketName).key(keyName).build())
+        return responseInputStream.reader().readLines()
     }
 
-    private fun S3Client.readFromBucket(bucketName: String, key: String): String {
-        val objectRequest = GetObjectRequest.builder()
-            .bucket(bucketName)
-            .key(key)
-            .build()
-        return getObject(objectRequest, ResponseTransformer.toBytes()).asString(UTF_8)
+    private fun S3Client.createBucketIfNotExists(bucketName: String) {
+        if (listBuckets().buckets().any { it.name() == bucketName }) return
+        createBucket(CreateBucketRequest.builder().bucket(bucketName).build())
     }
 
-    private fun S3Client.deleteBucket(bucketName: String, key: String) {
-        listBuckets().buckets().firstOrNull { it.name() == bucketName }?.let {
-            deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(key).build())
-            deleteBucket(DeleteBucketRequest.builder().bucket(bucketName).build())
-        }
+    private fun S3Client.deleteBucketKey(bucketName: String, keyName: String) =
+        deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(keyName).build())
+
+    private fun S3Client.putObjectWithBody(bucketName: String, keyName: String, body: String) {
+        val putRequest = PutObjectRequest.builder().bucket(bucketName).key(keyName).build()
+        putObject(putRequest, RequestBody.fromString(body))
     }
 
     companion object {
-        private val UTF_8 = Charset.forName("UTF-8")
+        private const val BUCKET_NAME = "my-spike-bucket-xpeppers-test"
+        private const val FILE_NAME = "votes"
     }
 }
