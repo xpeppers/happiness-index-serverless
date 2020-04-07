@@ -1,5 +1,4 @@
 import happiness.infrastructure.VotesOnS3
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import software.amazon.awssdk.core.sync.RequestBody
@@ -17,26 +16,29 @@ class VotesOnS3IntegrationTest {
     @BeforeEach
     fun setUp() {
         s3.createBucketIfNotExists(BUCKET_NAME)
-        s3.putObjectWithBody(BUCKET_NAME, FILE_NAME, "1\n2")
     }
 
     @AfterEach
     fun tearDown() {
-        s3.deleteBucketKey(BUCKET_NAME, FILE_NAME)
+        s3.deleteBucketKey(BUCKET_NAME, KEY_NAME)
     }
 
     @Test
-    @Disabled
     fun `reads votes from s3`() {
-        VotesOnS3().add("aVote")
-        val votesBucket = s3.readFromBucket(BUCKET_NAME, FILE_NAME)
+        s3.putObjectWithBody(BUCKET_NAME, KEY_NAME, "")
+        val votesOnS3 = VotesOnS3(BUCKET_NAME, KEY_NAME)
+        votesOnS3.add("aVote")
+        votesOnS3.add("anotherVote")
 
-        assertThat(votesBucket).contains("aVote")
+        val votesBucket = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
+
+        assertThat(votesBucket).contains("aVote", "anotherVote")
     }
 
     @Test
     fun `can read from s3 bucket`() {
-        val votes = s3.readFromBucket(BUCKET_NAME, FILE_NAME)
+        s3.putObjectWithBody(BUCKET_NAME, KEY_NAME, "1\n2")
+        val votes = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
 
         assertThat(votes).containsExactly("1", "2")
     }
@@ -62,6 +64,6 @@ class VotesOnS3IntegrationTest {
 
     companion object {
         private const val BUCKET_NAME = "my-spike-bucket-xpeppers-test"
-        private const val FILE_NAME = "votes"
+        private const val KEY_NAME = "votes"
     }
 }
