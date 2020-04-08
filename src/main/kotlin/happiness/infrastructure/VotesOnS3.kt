@@ -17,13 +17,20 @@ class VotesOnS3(private val bucketName: String, private val keyName: String) : V
     }
 
     private fun S3Client.readFromBucket(bucketName: String, keyName: String): List<String> {
-        val responseInputStream =
-            getObject(GetObjectRequest.builder().bucket(bucketName).key(keyName).build())
-        return responseInputStream.reader().readLines()
+        val getObjectRequest = GetObjectRequest.builder()
+            .bucket(bucketName)
+            .key(keyName)
+            .build()
+
+        return getObject(getObjectRequest).reader().readLines()
     }
 
     private fun S3Client.putObjectWithBody(bucketName: String, keyName: String, body: String) {
-        val putRequest = PutObjectRequest.builder().bucket(bucketName).key(keyName).build()
+        val putRequest = PutObjectRequest.builder()
+            .bucket(bucketName)
+            .key(keyName)
+            .build()
+
         putObject(putRequest, RequestBody.fromString(body))
     }
 }

@@ -6,8 +6,8 @@ import happiness.addvote.Votes
 
 val happinessVoteUseCase = HappinessVoteUseCase(
     object : Votes {
-        override fun add(text: String) {
-            println(text)
+        override fun add(vote: String) {
+            println(vote)
         }
     }
 )
