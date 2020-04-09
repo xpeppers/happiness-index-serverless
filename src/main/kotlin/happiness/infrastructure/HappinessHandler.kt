@@ -3,13 +3,13 @@ package happiness.infrastructure
 import daikon.lambda.HttpHandler
 import happiness.addvote.HappinessVoteUseCase
 import happiness.addvote.Votes
+import java.util.*
+
+private const val BUCKET_NAME = "happiness-index-tbd"
+private const val KEY_NAME = "votes"
 
 val happinessVoteUseCase = HappinessVoteUseCase(
-    object : Votes {
-        override fun add(vote: String) {
-            println(vote)
-        }
-    }
+    VotesOnS3(BUCKET_NAME,KEY_NAME)
 )
 
 class HappinessHandler(
