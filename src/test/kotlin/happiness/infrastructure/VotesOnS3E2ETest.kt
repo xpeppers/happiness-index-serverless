@@ -72,7 +72,7 @@ class VotesOnS3E2ETest {
 
     companion object {
         private const val BASE_URL = "https://8y4rzbgztl.execute-api.eu-west-1.amazonaws.com/dev"
-        private val BUCKET_NAME = "happiness-index-test-${UUID.randomUUID()}"
+        private const val BUCKET_NAME = "happiness-index-tbd"
         private const val KEY_NAME = "votes"
     }
 
