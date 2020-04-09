@@ -25,7 +25,7 @@ class VotesOnS3IntegrationTest {
     }
 
     @Test
-    fun `reads votes from s3`() {
+    fun `append votes to s3`() {
         s3.writeToBucket(BUCKET_NAME, KEY_NAME, "")
         val votesOnS3 = VotesOnS3(BUCKET_NAME, KEY_NAME)
         votesOnS3.add("aVote")
@@ -34,14 +34,6 @@ class VotesOnS3IntegrationTest {
         val votesBucket = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
 
         assertThat(votesBucket).contains("aVote", "anotherVote")
-    }
-
-    @Test
-    fun `can read from s3 bucket`() {
-        s3.writeToBucket(BUCKET_NAME, KEY_NAME, "1\n2")
-        val votes = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
-
-        assertThat(votes).containsExactly("1", "2")
     }
 
     private fun S3Client.readFromBucket(bucketName: String, keyName: String): List<String> {
