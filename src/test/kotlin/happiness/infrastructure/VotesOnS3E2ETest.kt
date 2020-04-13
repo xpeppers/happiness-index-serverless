@@ -19,12 +19,6 @@ class VotesOnS3E2ETest {
         s3.writeToBucket(BUCKET_NAME, KEY_NAME,"")
     }
 
-    @AfterEach
-    fun tearDown() {
-        s3.deleteBucket(BUCKET_NAME, KEY_NAME)
-    }
-
-    @Disabled("WIP: e2e template")
     @Test
     fun `http calls should append the vote to s3 bucket`() {
         post("$BASE_URL/happiness/1")

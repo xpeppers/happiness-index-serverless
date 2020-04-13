@@ -9,7 +9,7 @@ class HappinessVoteUseCaseTest {
     private val voteUseCase = HappinessVoteUseCase(votes)
 
     @Test
-    fun `useCase call properly the textAppender`() {
+    fun `useCase call properly the votes repository`() {
         every { votes.add(any()) } just Runs
         voteUseCase.execute(1)
 
