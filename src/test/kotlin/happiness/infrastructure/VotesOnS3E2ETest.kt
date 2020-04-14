@@ -2,11 +2,12 @@ package happiness.infrastructure
 
 import io.restassured.RestAssured
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.*
-import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class VotesOnS3E2ETest {
@@ -16,7 +17,7 @@ class VotesOnS3E2ETest {
     @BeforeEach
     fun setUp() {
         s3.createBucketIfNotExists(BUCKET_NAME)
-        s3.writeToBucket(BUCKET_NAME, KEY_NAME,"")
+        s3.writeToBucket(BUCKET_NAME, KEY_NAME, "")
     }
 
     @Test
@@ -31,7 +32,7 @@ class VotesOnS3E2ETest {
         val secondBucketContent = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
 
         assertThat(secondBucketContent)
-            .containsExactly("1","2")
+            .containsExactly("1", "2")
     }
 
     private fun post(url: String) {
@@ -65,9 +66,7 @@ class VotesOnS3E2ETest {
     }
 
     companion object {
-        private const val BASE_URL = "https://8y4rzbgztl.execute-api.eu-west-1.amazonaws.com/dev"
-        private const val BUCKET_NAME = "happiness-index-tbd"
-        private const val KEY_NAME = "votes"
+        private const val BASE_URL = "https://g49lpxwuhd.execute-api.eu-west-1.amazonaws.com/dev"
     }
 
 }

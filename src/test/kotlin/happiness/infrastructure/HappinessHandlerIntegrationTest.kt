@@ -17,7 +17,7 @@ class HappinessHandlerTestIT {
     }
 
     companion object {
-        private const val BASE_URL = "https://8y4rzbgztl.execute-api.eu-west-1.amazonaws.com/dev"
+        private const val BASE_URL = "https://g49lpxwuhd.execute-api.eu-west-1.amazonaws.com/dev"
     }
 }
 

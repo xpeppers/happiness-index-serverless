@@ -5,8 +5,8 @@ import happiness.addvote.HappinessVoteUseCase
 import happiness.addvote.Votes
 import java.util.*
 
-private const val BUCKET_NAME = "happiness-index-tbd"
-private const val KEY_NAME = "votes"
+const val BUCKET_NAME = "happiness-index-pietro-dibello"
+const val KEY_NAME = "votes"
 
 val happinessVoteUseCase = HappinessVoteUseCase(
     VotesOnS3(BUCKET_NAME,KEY_NAME)
