@@ -17,7 +17,7 @@ class VotesOnS3E2ETest {
     @BeforeEach
     fun setUp() {
         s3.createBucketIfNotExists(BUCKET_NAME)
-        s3.writeToBucket(BUCKET_NAME, KEY_NAME, "")
+        s3.emptyBucketKey(BUCKET_NAME, KEY_NAME)
     }
 
     @Test
@@ -56,6 +56,10 @@ class VotesOnS3E2ETest {
     private fun S3Client.writeToBucket(bucketName: String, keyName: String, body: String) {
         val putRequest = PutObjectRequest.builder().bucket(bucketName).key(keyName).build()
         putObject(putRequest, RequestBody.fromString(body))
+    }
+
+    private fun S3Client.emptyBucketKey(bucketName: String, bucketKey: String) {
+        writeToBucket(bucketName, bucketKey, "")
     }
 
     private fun S3Client.deleteBucket(bucketName: String, key: String) {

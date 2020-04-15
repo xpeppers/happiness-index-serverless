@@ -1,6 +1,7 @@
 package happiness.infrastructure
 
 import happiness.addvote.Votes
+import happiness.getvotes.Vote
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
@@ -14,6 +15,11 @@ class VotesOnS3(private val bucketName: String, private val keyName: String) : V
         val existingVotes = s3.readFromBucket(bucketName, keyName)
         val newVotes = existingVotes + vote
         s3.putObjectWithBody(bucketName, keyName, newVotes.joinToString("\n"))
+    }
+
+    override fun all(): List<Vote> {
+        // TODO replace with real read of votes on bucket
+        return listOf(Vote(3), Vote(1))
     }
 
     private fun S3Client.readFromBucket(bucketName: String, keyName: String): List<String> {
