@@ -1,5 +1,6 @@
 package happiness.infrastructure
 
+import happiness.BASE_URL
 import io.restassured.RestAssured
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -68,9 +69,4 @@ class VotesOnS3E2ETest {
             deleteBucket(DeleteBucketRequest.builder().bucket(bucketName).build())
         }
     }
-
-    companion object {
-        private const val BASE_URL = "https://g49lpxwuhd.execute-api.eu-west-1.amazonaws.com/dev"
-    }
-
 }
