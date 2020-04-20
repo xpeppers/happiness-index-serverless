@@ -1,3 +1,4 @@
+import happiness.getvotes.Vote
 import happiness.infrastructure.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
@@ -31,6 +32,17 @@ class VotesOnS3IntegrationTest {
 
         val votes = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
         assertThat(votes).contains("aVote", "anotherVote")
+    }
+
+    @Test
+    fun `get all votes on s3`() {
+        val votesOnS3 = VotesOnS3(BUCKET_NAME, KEY_NAME)
+        votesOnS3.add("1")
+        votesOnS3.add("2")
+
+        val votes = votesOnS3.all()
+
+        assertThat(votes).containsExactly(Vote(1), Vote(2))
     }
 
     companion object {

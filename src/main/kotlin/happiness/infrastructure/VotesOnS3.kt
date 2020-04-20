@@ -17,10 +17,9 @@ class VotesOnS3(private val bucketName: String, private val keyName: String) : V
         s3.putObjectWithBody(bucketName, keyName, newVotes.joinToString("\n"))
     }
 
-    override fun all(): List<Vote> {
-        // TODO replace with real read of votes on bucket
-        return listOf(Vote(3), Vote(1))
-    }
+    override fun all(): List<Vote> = s3
+        .readFromBucket(bucketName, keyName)
+        .map { Vote(it.toInt()) }
 
     private fun S3Client.readFromBucket(bucketName: String, keyName: String): List<String> {
         val getObjectRequest = GetObjectRequest.builder()
