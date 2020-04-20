@@ -12,7 +12,14 @@
 
 ## logs
 
-A good way to keep an eye on the app logs is using [awslogs](https://github.com/jorgebastida/awslogs)
+Serverless provides an easy way to read the logs. 
+
+Given our function is called `other`:
+```
+sls logs -f other --tail
+```
+
+A good alternative to keep an eye on the app logs is using [awslogs](https://github.com/jorgebastida/awslogs)
 
 **Installation**
 
