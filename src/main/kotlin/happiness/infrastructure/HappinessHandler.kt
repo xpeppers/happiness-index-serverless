@@ -2,6 +2,7 @@ package happiness.infrastructure
 
 import daikon.gson.json
 import daikon.lambda.HttpHandler
+import daikon.lambda.LambdaCall
 import happiness.addvote.AddHappinessVoteUseCase
 import happiness.getvotes.GetHappinessVotesUseCase
 
@@ -20,7 +21,7 @@ class HappinessHandler(
     private val addVoteUseCase: AddHappinessVoteUseCase = addHappinessVote,
     private val getVotesUseCase: GetHappinessVotesUseCase = getHappinessVotes
 ) : HttpHandler() {
-    override fun routing() {
+    override fun LambdaCall.routing() {
         post("/happiness/:vote") { req, res ->
             val vote = req.param(":vote").toInt()
             addVoteUseCase.execute(vote)
