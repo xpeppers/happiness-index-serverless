@@ -1,6 +1,8 @@
-package happiness.infrastructure
+package happiness.uat
 
 import happiness.BASE_URL
+import happiness.infrastructure.BUCKET_NAME
+import happiness.infrastructure.KEY_NAME
 import io.restassured.RestAssured
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -11,33 +13,41 @@ import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class VotesOnS3E2ETest {
+class AddHappinessVoteAcceptanceTest {
 
     private val s3 by lazy { S3Client.create() }
 
     @BeforeEach
     fun setUp() {
         s3.createBucketIfNotExists(BUCKET_NAME)
-        s3.emptyBucketKey(BUCKET_NAME, KEY_NAME)
+        s3.emptyBucketKey(
+            BUCKET_NAME,
+            KEY_NAME
+        )
     }
 
     @Test
     fun `http calls should append the vote to s3 bucket`() {
         post("$BASE_URL/happiness/1")
-        val firstBucketContent = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
+        val firstBucketContent = s3.readFromBucket(
+            BUCKET_NAME,
+            KEY_NAME
+        )
 
-        assertThat(firstBucketContent)
-            .containsExactly("1")
+        assertThat(firstBucketContent).containsExactly("1")
 
         post("$BASE_URL/happiness/2")
-        val secondBucketContent = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
 
-        assertThat(secondBucketContent)
-            .containsExactly("1", "2")
+        val secondBucketContent = s3.readFromBucket(
+            BUCKET_NAME,
+            KEY_NAME
+        )
+        assertThat(secondBucketContent).containsExactly("1", "2")
     }
 
     private fun post(url: String) {
-        RestAssured.post(url).then()
+        RestAssured.post(url)
+            .then()
             .statusCode(201)
     }
 

@@ -1,6 +1,5 @@
 package happiness.infrastructure
 
-
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import happiness.BASE_URL
@@ -8,12 +7,7 @@ import happiness.getvotes.Vote
 import io.restassured.RestAssured.get
 import io.restassured.RestAssured.post
 import org.assertj.core.api.Assertions.assertThat
-import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.Test
-import org.hamcrest.Matchers.empty
-import org.hamcrest.core.Is.`is` as IS
-import org.hamcrest.core.IsNot.not as NOT
-
 
 class HappinessHandlerTestIT {
 
