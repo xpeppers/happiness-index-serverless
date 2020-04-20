@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Test
 class AddHappinessVoteUseCaseTest {
 
     private val votes = mockk<Votes>()
-    private val voteUseCase = AddHappinessVoteUseCase(votes)
+    private val addHappinessVote = AddHappinessVoteUseCase(votes)
 
     @Test
     fun `useCase call properly the votes repository`() {
         every { votes.add(any()) } just Runs
-        voteUseCase.execute(1)
+        addHappinessVote.execute(1)
 
         verify { votes.add("1") }
         confirmVerified(votes)

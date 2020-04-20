@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 class GetHappinessVotesUseCaseTest {
 
     private val votes = mockk<Votes>()
+    private val getHappinessVotes = GetHappinessVotesUseCase(votes)
 
     @Test
     fun `get all votes`() {
@@ -18,8 +19,7 @@ class GetHappinessVotesUseCaseTest {
             Vote(1)
         )
 
-        val useCase = GetHappinessVotesUseCase(votes)
-        val allVotes = useCase.execute()
+        val allVotes = getHappinessVotes.execute()
 
         assertThat(allVotes).containsExactlyInAnyOrder(Vote(1), Vote(1), Vote(3))
     }
