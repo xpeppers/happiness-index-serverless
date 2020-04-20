@@ -30,7 +30,7 @@ class HappinessHandler(
         }
 
         get("/happiness/votes") { req, res ->
-            val votes = getHappinessVotes.execute()
+            val votes = getVotesUseCase.execute()
 
             res.status(200)
             res.json(votes)
