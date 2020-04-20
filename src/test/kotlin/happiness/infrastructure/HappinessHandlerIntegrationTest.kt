@@ -4,12 +4,12 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import happiness.BASE_URL
 import happiness.getvotes.Vote
+import happiness.shouldBe
 import io.restassured.RestAssured.get
 import io.restassured.RestAssured.post
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HappinessHandlerTestIT {
+class HappinessHandlerIntegrationTest {
 
     @Test
     fun `add vote route respond correctly`() {
@@ -38,6 +38,3 @@ class HappinessHandlerTestIT {
 
 }
 
-private infix fun Any?.shouldBe(value: Any?) {
-    assertThat(this).isEqualTo(value)
-}
