@@ -3,10 +3,10 @@ package happiness.addvote
 import io.mockk.*
 import org.junit.jupiter.api.Test
 
-class VoteUseCaseTest {
+class AddHappinessVoteUseCaseTest {
 
     private val votes = mockk<Votes>()
-    private val voteUseCase = VoteUseCase(votes)
+    private val voteUseCase = AddHappinessVoteUseCase(votes)
 
     @Test
     fun `useCase call properly the votes repository`() {

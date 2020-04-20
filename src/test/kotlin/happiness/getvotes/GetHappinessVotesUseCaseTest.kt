@@ -6,7 +6,7 @@ import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class GetVotesUseCaseTest {
+class GetHappinessVotesUseCaseTest {
 
     private val votes = mockk<Votes>()
 
@@ -18,7 +18,7 @@ class GetVotesUseCaseTest {
             Vote(1)
         )
 
-        val useCase = GetVotesUseCase(votes)
+        val useCase = GetHappinessVotesUseCase(votes)
         val allVotes = useCase.execute()
 
         assertThat(allVotes).containsExactlyInAnyOrder(Vote(1), Vote(1), Vote(3))
