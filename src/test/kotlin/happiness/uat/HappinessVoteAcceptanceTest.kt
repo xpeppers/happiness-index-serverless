@@ -11,7 +11,7 @@ import org.junit.jupiter.api.TestInstance
 import software.amazon.awssdk.services.s3.S3Client
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AddHappinessVoteAcceptanceTest {
+class HappinessVoteAcceptanceTest {
 
     private val s3 by lazy { S3Client.create() }
 
@@ -22,7 +22,7 @@ class AddHappinessVoteAcceptanceTest {
     }
 
     @Test
-    fun `http calls should append the vote to s3 bucket`() {
+    fun `can give a happiness vote`() {
         post("$BASE_URL/happiness/1") shouldBe "Thanks for voting :D"
 
         assertThat(votes()).containsExactly("1")
