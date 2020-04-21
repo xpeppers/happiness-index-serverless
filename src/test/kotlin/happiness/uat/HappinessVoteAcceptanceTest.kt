@@ -4,6 +4,8 @@ import happiness.BASE_URL
 import happiness.infrastructure.*
 import happiness.shouldBe
 import io.restassured.RestAssured
+import io.restassured.RestAssured.get
+import io.restassured.http.ContentType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -32,8 +34,18 @@ class HappinessVoteAcceptanceTest {
         assertThat(votes()).containsExactly("1", "2")
     }
 
+    @Test
+    fun `can read all votes`() {
+        get("$BASE_URL/happiness/votes")
+            .then()
+            .statusCode(200)
+            .and()
+            .contentType(ContentType.JSON)
+    }
+
     private fun post(url: String): String {
-        return RestAssured.post(url)
+        return RestAssured
+            .post(url)
             .then()
             .statusCode(201)
             .extract()
