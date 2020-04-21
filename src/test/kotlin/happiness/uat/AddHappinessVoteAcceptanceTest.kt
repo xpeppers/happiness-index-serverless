@@ -2,7 +2,8 @@ package happiness.uat
 
 import happiness.BASE_URL
 import happiness.infrastructure.*
-import io.restassured.RestAssured.post
+import happiness.shouldBe
+import io.restassured.RestAssured
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -22,17 +23,22 @@ class AddHappinessVoteAcceptanceTest {
 
     @Test
     fun `http calls should append the vote to s3 bucket`() {
-        post("$BASE_URL/happiness/1")
-            .then()
-            .statusCode(201)
+        post("$BASE_URL/happiness/1") shouldBe "Thanks for voting :D"
 
         assertThat(votes()).containsExactly("1")
 
-        post("$BASE_URL/happiness/2")
-            .then()
-            .statusCode(201)
+        post("$BASE_URL/happiness/2") shouldBe "Thanks for voting :D"
 
         assertThat(votes()).containsExactly("1", "2")
+    }
+
+    private fun post(url: String): String {
+        return RestAssured.post(url)
+            .then()
+            .statusCode(201)
+            .extract()
+            .body()
+            .asString()
     }
 
     private fun votes() = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
