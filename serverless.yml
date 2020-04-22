@@ -3,6 +3,9 @@ service: happiness-index
 package:
   artifact: build/libs/happiness-index-dev-all.jar
 
+custom:
+  testBucketName: happiness-index-testbucket
+
 provider:
   name: aws
   runtime: java11
@@ -15,7 +18,7 @@ provider:
         - "s3:ListBucket"
         - "s3:PutObject"
       Resource:
-        - arn:aws:s3:::happiness-index-pietro-angelo/*
+        - arn:aws:s3:::${self:custom.testBucketName}/*
 
 functions:
   home:
@@ -30,3 +33,17 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
+
+resources:
+  Resources:
+    AttachmentsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.testBucketName}
+
+
+# Print out the name of the bucket that is created
+Outputs:
+  AttachmentsBucketName:
+    Value:
+      Ref: AttachmentsBucket

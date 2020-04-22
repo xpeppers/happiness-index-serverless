@@ -22,7 +22,6 @@ class HappinessVoteAcceptanceTest {
 
     @BeforeEach
     fun setUp() {
-        s3.createBucketIfNotExists(BUCKET_NAME)
         s3.emptyBucketKey(BUCKET_NAME, KEY_NAME)
     }
 

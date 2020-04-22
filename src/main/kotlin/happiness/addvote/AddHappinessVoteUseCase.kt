@@ -5,3 +5,5 @@ class AddHappinessVoteUseCase(private val votes: Votes) {
         votes.add(vote.toString())
     }
 }
+
+
