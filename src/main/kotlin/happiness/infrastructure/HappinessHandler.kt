@@ -5,6 +5,7 @@ import daikon.lambda.HttpHandler
 import daikon.lambda.LambdaCall
 import happiness.addvote.AddHappinessVoteUseCase
 import happiness.getvotes.GetHappinessVotesUseCase
+import happiness.getvotes.Vote
 
 const val BUCKET_NAME = "happiness-index-pietro-angelo"
 const val KEY_NAME = "votes"
@@ -34,7 +35,11 @@ class HappinessHandler(
             val votes = getVotesUseCase.execute()
 
             res.status(200)
-            res.json(votes)
+            res.json(VotesResponse(votes))
         }
     }
+
+    data class VotesResponse(
+        val votes: List<Vote>
+    )
 }

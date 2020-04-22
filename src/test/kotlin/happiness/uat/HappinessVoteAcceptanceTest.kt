@@ -1,12 +1,15 @@
 package happiness.uat
 
 import happiness.BASE_URL
-import happiness.infrastructure.*
+import happiness.infrastructure.BUCKET_NAME
+import happiness.infrastructure.KEY_NAME
+import happiness.infrastructure.createBucketIfNotExists
+import happiness.infrastructure.emptyBucketKey
 import happiness.shouldBe
 import io.restassured.RestAssured
-import io.restassured.RestAssured.get
 import io.restassured.http.ContentType
-import org.assertj.core.api.Assertions.assertThat
+import io.restassured.response.ValidatableResponse
+import org.hamcrest.Matchers.hasItems
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -26,17 +29,15 @@ class HappinessVoteAcceptanceTest {
     @Test
     fun `can give a happiness vote`() {
         post("$BASE_URL/happiness/1") shouldBe "Thanks for voting :D"
-
-        assertThat(votes()).containsExactly("1")
-
         post("$BASE_URL/happiness/2") shouldBe "Thanks for voting :D"
 
-        assertThat(votes()).containsExactly("1", "2")
+        get("$BASE_URL/happiness/votes")
+            .body("votes.value", hasItems(1, 2))
     }
 
-    @Test
-    fun `can read all votes`() {
-        get("$BASE_URL/happiness/votes")
+    private fun get(url: String): ValidatableResponse {
+        return RestAssured
+            .get(url)
             .then()
             .statusCode(200)
             .and()
@@ -52,6 +53,4 @@ class HappinessVoteAcceptanceTest {
             .body()
             .asString()
     }
-
-    private fun votes() = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
 }
