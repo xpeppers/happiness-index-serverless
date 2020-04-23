@@ -4,8 +4,14 @@
 1. [Serverless Framework](https://serverless.com) installed
 2. Java 11 or later
 
-## build
-`./gradlew clean build`
+Before running the tests or deploying the on the command line, please remember to set up the `xpeppers-develop` role with
+
+```bash
+setup_aws_credentials xpeppers-develop
+```
+
+## test
+`./gradlew test`
 
 ## deploy
 `./gradlew clean deploy`
