@@ -3,7 +3,6 @@ package happiness.uat
 import happiness.BASE_URL
 import happiness.infrastructure.BUCKET_NAME
 import happiness.infrastructure.KEY_NAME
-import happiness.infrastructure.createBucketIfNotExists
 import happiness.infrastructure.emptyBucketKey
 import happiness.shouldBe
 import io.restassured.RestAssured

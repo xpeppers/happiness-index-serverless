@@ -7,7 +7,7 @@ import happiness.addvote.AddHappinessVoteUseCase
 import happiness.getvotes.GetHappinessVotesUseCase
 import happiness.getvotes.Vote
 
-const val BUCKET_NAME = "happiness-index-testbucket"
+const val BUCKET_NAME = "happiness-index-temp"
 const val KEY_NAME = "votes"
 
 val addHappinessVote = AddHappinessVoteUseCase(
