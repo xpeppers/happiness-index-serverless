@@ -21,18 +21,13 @@ provider:
         - arn:aws:s3:::${self:custom.bucketName}/*
 
 functions:
-  home:
-    handler: happiness.infrastructure.HappinessHandler
-    events:
-      - http:
-          path: /
-          method: ANY
-  other:
+  happiness:
     handler: happiness.infrastructure.HappinessHandler
     events:
       - http:
           path: /{proxy+}
           method: ANY
+
 
 resources:
   Resources:
