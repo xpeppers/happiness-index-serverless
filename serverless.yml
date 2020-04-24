@@ -27,7 +27,8 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
-
+    environment:
+      HAPPINESS_BUCKET_NAME: "happiness-index-temp"
 
 resources:
   Resources:

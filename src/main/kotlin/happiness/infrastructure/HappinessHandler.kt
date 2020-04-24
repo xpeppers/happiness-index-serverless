@@ -7,7 +7,7 @@ import happiness.addvote.AddHappinessVoteUseCase
 import happiness.getvotes.GetHappinessVotesUseCase
 import happiness.getvotes.Vote
 
-const val BUCKET_NAME = "happiness-index-temp"
+val BUCKET_NAME = System.getenv("HAPPINESS_BUCKET_NAME")
 const val KEY_NAME = "votes"
 
 val addHappinessVote = AddHappinessVoteUseCase(

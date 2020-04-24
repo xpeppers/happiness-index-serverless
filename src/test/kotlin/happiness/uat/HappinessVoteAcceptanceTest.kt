@@ -1,7 +1,6 @@
 package happiness.uat
 
 import happiness.BASE_URL
-import happiness.infrastructure.BUCKET_NAME
 import happiness.infrastructure.KEY_NAME
 import happiness.infrastructure.emptyBucketKey
 import happiness.shouldBe
@@ -21,7 +20,7 @@ class HappinessVoteAcceptanceTest {
 
     @BeforeEach
     fun setUp() {
-        s3.emptyBucketKey(BUCKET_NAME, KEY_NAME)
+        s3.emptyBucketKey("happiness-index-temp", KEY_NAME)
     }
 
     @Test
