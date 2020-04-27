@@ -1,3 +1,4 @@
+import happiness.addvote.UserVote
 import happiness.getvotes.Vote
 import happiness.infrastructure.*
 import org.assertj.core.api.Assertions.assertThat
@@ -27,18 +28,18 @@ class VotesOnS3IntegrationTest {
     @Test
     fun `append votes to s3`() {
         val votesOnS3 = VotesOnS3(BUCKET_NAME, KEY_NAME)
-        votesOnS3.add("aVote")
-        votesOnS3.add("anotherVote")
+        votesOnS3.add(UserVote(vote = 1, userId = "1234", location = "MI"))
+        votesOnS3.add(UserVote(vote = 4, userId = "1234", location = "MI"))
 
         val votes = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
-        assertThat(votes).contains("aVote", "anotherVote")
+        assertThat(votes).contains("1", "4")
     }
 
     @Test
     fun `get all votes on s3`() {
         val votesOnS3 = VotesOnS3(BUCKET_NAME, KEY_NAME)
-        votesOnS3.add("1")
-        votesOnS3.add("2")
+        votesOnS3.add(UserVote(vote = 1, userId = "1234", location = "MI"))
+        votesOnS3.add(UserVote(vote = 2, userId = "1234", location = "MI"))
 
         val votes = votesOnS3.all()
 

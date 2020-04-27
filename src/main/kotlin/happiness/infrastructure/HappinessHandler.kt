@@ -1,8 +1,10 @@
 package happiness.infrastructure
 
+import com.google.gson.Gson
 import daikon.gson.json
 import daikon.lambda.HttpHandler
 import daikon.lambda.LambdaCall
+import happiness.addvote.UserVote
 import happiness.addvote.AddHappinessVoteUseCase
 import happiness.getvotes.GetHappinessVotesUseCase
 import happiness.getvotes.Vote
@@ -23,9 +25,9 @@ class HappinessHandler(
     private val getVotesUseCase: GetHappinessVotesUseCase = getHappinessVotes
 ) : HttpHandler() {
     override fun LambdaCall.routing() {
-        post("/happiness/:vote") { req, res ->
-            val vote = req.param(":vote").toInt()
-            addVoteUseCase.execute(vote)
+        post("/happiness") { req, res ->
+            val userVote = Gson().fromJson(req.body(), UserVote::class.java)
+            addVoteUseCase.execute(userVote)
 
             res.status(201)
             res.write("Thanks for voting :D")
@@ -43,3 +45,4 @@ class HappinessHandler(
         val votes: List<Vote>
     )
 }
+

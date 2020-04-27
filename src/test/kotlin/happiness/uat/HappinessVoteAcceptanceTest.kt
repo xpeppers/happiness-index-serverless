@@ -25,6 +25,7 @@ class HappinessVoteAcceptanceTest {
     }
 
     @Test
+    @Disabled("to convert to the new way of expressing happiness")
     fun `can give a happiness vote`() {
         post("$BASE_URL/happiness/1") shouldBe "Thanks for voting :D"
         post("$BASE_URL/happiness/2") shouldBe "Thanks for voting :D"
@@ -34,9 +35,9 @@ class HappinessVoteAcceptanceTest {
     }
 
     @Test
-    @Disabled
     fun `can give a happiness vote for a given user and location`() {
-        val happinessVote = """{
+        val happiness = """{
+            "vote": 1,
             "user": "1234",
             "location": "MI"
         }            
@@ -45,16 +46,16 @@ class HappinessVoteAcceptanceTest {
         RestAssured
             .given()
             .contentType(ContentType.JSON)
-            .body(happinessVote)
-            .post("$BASE_URL/happiness/1")
+            .body(happiness)
+            .post("$BASE_URL/happiness")
             .then()
             .statusCode(201)
             .extract()
             .body()
             .asString() shouldBe "Thanks for voting :D"
 
-//        get("$BASE_URL/happiness/votes")
-//            .body("votes.value", hasItems(1))
+        get("$BASE_URL/happiness/votes")
+            .body("votes.value", hasItems(1))
     }
 
     private fun get(url: String): ValidatableResponse {
