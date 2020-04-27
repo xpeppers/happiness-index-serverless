@@ -9,6 +9,7 @@ import io.restassured.http.ContentType
 import io.restassured.response.ValidatableResponse
 import org.hamcrest.Matchers.hasItems
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import software.amazon.awssdk.services.s3.S3Client
@@ -30,6 +31,30 @@ class HappinessVoteAcceptanceTest {
 
         get("$BASE_URL/happiness/votes")
             .body("votes.value", hasItems(1, 2))
+    }
+
+    @Test
+    @Disabled
+    fun `can give a happiness vote for a given user and location`() {
+        val happinessVote = """{
+            "user": "1234",
+            "location": "MI"
+        }            
+        """.trimIndent()
+
+        RestAssured
+            .given()
+            .contentType(ContentType.JSON)
+            .body(happinessVote)
+            .post("$BASE_URL/happiness/1")
+            .then()
+            .statusCode(201)
+            .extract()
+            .body()
+            .asString() shouldBe "Thanks for voting :D"
+
+//        get("$BASE_URL/happiness/votes")
+//            .body("votes.value", hasItems(1))
     }
 
     private fun get(url: String): ValidatableResponse {
