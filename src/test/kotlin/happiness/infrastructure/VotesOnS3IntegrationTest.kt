@@ -2,11 +2,10 @@ import happiness.addvote.UserVote
 import happiness.getvotes.Vote
 import happiness.infrastructure.*
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.*
 import software.amazon.awssdk.services.s3.S3Client
+import java.time.LocalDateTime
+import java.time.LocalDateTime.parse
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -26,24 +25,28 @@ class VotesOnS3IntegrationTest {
     }
 
     @Test
-    fun `append votes to s3`() {
+    fun `append votes to s3 with date information`() {
         val votesOnS3 = VotesOnS3(BUCKET_NAME, KEY_NAME)
-        votesOnS3.add(UserVote(vote = 1, userId = "1234", location = "MI"))
-        votesOnS3.add(UserVote(vote = 4, userId = "1234", location = "MI"))
+        votesOnS3.add(UserVote(vote = 1, userId = "1234", location = "MI", date = parse("2020-01-01T12:00:00")))
+        votesOnS3.add(UserVote(vote = 4, userId = "1234", location = "MI", date = parse("2011-03-02T00:00:00")))
 
         val votes = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
-        assertThat(votes).contains("1", "4")
+        assertThat(votes).contains("2020-01-01T12:00:00;1")
+        assertThat(votes).contains("2011-03-02T00:00:00;4")
     }
 
     @Test
-    fun `get all votes on s3`() {
+    fun `get all votes on s3 with data information`() {
         val votesOnS3 = VotesOnS3(BUCKET_NAME, KEY_NAME)
-        votesOnS3.add(UserVote(vote = 1, userId = "1234", location = "MI"))
-        votesOnS3.add(UserVote(vote = 2, userId = "1234", location = "MI"))
+        votesOnS3.add(UserVote(vote = 1, userId = "1234", location = "MI", date = parse("2020-01-01T12:00:00")))
+        votesOnS3.add(UserVote(vote = 4, userId = "1234", location = "MI", date = parse("2011-03-02T00:00:00")))
 
-        val votes = votesOnS3.all()
+        val votes = votesOnS3.all2()
 
-        assertThat(votes).containsExactly(Vote(1), Vote(2))
+        assertThat(votes).containsExactly(
+            UserVote(vote = 1, date = parse("2020-01-01T12:00:00"), userId = "", location = ""),
+            UserVote(vote = 4, date = parse("2011-03-02T00:00:00"), userId = "", location = "")
+        )
     }
 
     companion object {
