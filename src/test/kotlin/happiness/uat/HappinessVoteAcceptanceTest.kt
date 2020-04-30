@@ -46,7 +46,7 @@ class HappinessVoteAcceptanceTest {
 
         get("$BASE_URL/happiness/votes")
             .body("votes.vote", hasItems(1, 3))
-//            .body("votes.date", hasItems("2011-03-02T00:00:00")) <== TODO
+            .body("votes.date", hasItems("2020-03-03T15:13:10", "2020-03-02T13:23:00"))
     }
 
     private fun post(url: String, json: String): String? {

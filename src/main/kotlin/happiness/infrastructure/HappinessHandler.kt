@@ -1,15 +1,18 @@
 package happiness.infrastructure
 
+import com.google.gson.JsonPrimitive
 import daikon.gson.Deserializer
+import daikon.gson.Serializer
 import daikon.gson.json
 import daikon.lambda.HttpHandler
 import daikon.lambda.LambdaCall
-import happiness.addvote.UserVote
 import happiness.addvote.AddHappinessVoteUseCase
+import happiness.addvote.UserVote
 import happiness.getvotes.GetHappinessVotesUseCase
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter.ISO_DATE_TIME
 
-val BUCKET_NAME = System.getenv("HAPPINESS_BUCKET_NAME")
+val BUCKET_NAME: String = System.getenv("HAPPINESS_BUCKET_NAME")
 const val KEY_NAME = "votes"
 
 val addHappinessVote = AddHappinessVoteUseCase(
@@ -26,20 +29,24 @@ class HappinessHandler(
 ) : HttpHandler() {
     override fun LambdaCall.routing() {
         exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }
-        post("/happiness") { req, res ->
-            val userVote = req.json<UserVote>(dateDeserializer())
+        post("/happiness") { request, response ->
+            val userVote = request.json<UserVote>(dateDeserializer())
             addVoteUseCase.execute(userVote)
 
-            res.status(201)
-            res.write("Thanks for voting :D")
+            response.status(201)
+            response.write("Thanks for voting :D")
         }
 
-        get("/happiness/votes") { _, res ->
+        get("/happiness/votes") { _, response ->
             val votes = getVotesUseCase.execute()
 
-            res.status(200)
-            res.json(VotesResponse(votes))
+            response.status(200)
+            response.json(VotesResponse(votes), dateSerializer())
         }
+    }
+
+    private fun dateSerializer(): Serializer<LocalDateTime> {
+        return Serializer(LocalDateTime::class) { date: LocalDateTime, _, _ -> JsonPrimitive(date.format(ISO_DATE_TIME)) }
     }
 
     private fun dateDeserializer() =
