@@ -8,9 +8,7 @@ import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.response.ValidatableResponse
 import org.hamcrest.Matchers.hasItems
-import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import software.amazon.awssdk.services.s3.S3Client
@@ -26,39 +24,42 @@ class HappinessVoteAcceptanceTest {
     }
 
     @Test
-    @Disabled("to convert to the new way of expressing happiness")
-    fun `can give a happiness vote`() {
-        post("$BASE_URL/happiness/1") shouldBe "Thanks for voting :D"
-        post("$BASE_URL/happiness/2") shouldBe "Thanks for voting :D"
-
-        get("$BASE_URL/happiness/votes")
-            .body("votes.value", hasItems(1, 2))
-    }
-
-    @Test
     fun `can give a happiness vote for a given user and location`() {
-        val happiness = """{ 
+        val userVote = """{ 
             "vote": 1,
             "userId": "1234",
             "location": "MI",
-            "date":"2011-03-02T00:00:00"
+            "date":"2020-03-03T15:13:10"
         }            
-        """.trimIndent()
+        """
 
-        RestAssured
+        val anotherUserVote = """{ 
+            "vote": 3,
+            "userId": "1234",
+            "location": "MI",
+            "date":"2020-03-02T13:23:00"
+        }            
+        """
+
+        post("$BASE_URL/happiness", userVote) shouldBe "Thanks for voting :D"
+        post("$BASE_URL/happiness", anotherUserVote) shouldBe "Thanks for voting :D"
+
+        get("$BASE_URL/happiness/votes")
+            .body("votes.vote", hasItems(1, 3))
+//            .body("votes.date", hasItems("2011-03-02T00:00:00")) <== TODO
+    }
+
+    private fun post(url: String, json: String): String? {
+        return RestAssured
             .given()
             .contentType(ContentType.JSON)
-            .body(happiness)
-            .post("$BASE_URL/happiness")
+            .body(json)
+            .post(url)
             .then()
             .statusCode(201)
             .extract()
             .body()
-            .asString() shouldBe "Thanks for voting :D"
-
-        get("$BASE_URL/happiness/votes")
-            .body("votes.vote", hasItems(1))
-//            .body("votes.date", hasItems("2011-03-02T00:00:00")) <== TODO
+            .asString()
     }
 
     private fun get(url: String): ValidatableResponse {
@@ -70,13 +71,5 @@ class HappinessVoteAcceptanceTest {
             .contentType(ContentType.JSON)
     }
 
-    private fun post(url: String): String {
-        return RestAssured
-            .post(url)
-            .then()
-            .statusCode(201)
-            .extract()
-            .body()
-            .asString()
-    }
+
 }
