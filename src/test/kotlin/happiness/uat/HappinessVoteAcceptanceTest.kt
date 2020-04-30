@@ -8,6 +8,7 @@ import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.response.ValidatableResponse
 import org.hamcrest.Matchers.hasItems
+import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -36,10 +37,11 @@ class HappinessVoteAcceptanceTest {
 
     @Test
     fun `can give a happiness vote for a given user and location`() {
-        val happiness = """{
+        val happiness = """{ 
             "vote": 1,
-            "user": "1234",
-            "location": "MI"
+            "userId": "1234",
+            "location": "MI",
+            "date":"2011-03-02T00:00:00"
         }            
         """.trimIndent()
 
@@ -55,7 +57,8 @@ class HappinessVoteAcceptanceTest {
             .asString() shouldBe "Thanks for voting :D"
 
         get("$BASE_URL/happiness/votes")
-            .body("votes.value", hasItems(1))
+            .body("votes.vote", hasItems(1))
+//            .body("votes.date", hasItems("2011-03-02T00:00:00")) <== TODO
     }
 
     private fun get(url: String): ValidatableResponse {

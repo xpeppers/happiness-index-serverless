@@ -1,13 +1,13 @@
 package happiness.infrastructure
 
-import com.google.gson.Gson
+import daikon.gson.Deserializer
 import daikon.gson.json
 import daikon.lambda.HttpHandler
 import daikon.lambda.LambdaCall
 import happiness.addvote.UserVote
 import happiness.addvote.AddHappinessVoteUseCase
 import happiness.getvotes.GetHappinessVotesUseCase
-import happiness.getvotes.Vote
+import java.time.LocalDateTime
 
 val BUCKET_NAME = System.getenv("HAPPINESS_BUCKET_NAME")
 const val KEY_NAME = "votes"
@@ -25,8 +25,11 @@ class HappinessHandler(
     private val getVotesUseCase: GetHappinessVotesUseCase = getHappinessVotes
 ) : HttpHandler() {
     override fun LambdaCall.routing() {
+        exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }
         post("/happiness") { req, res ->
-            val userVote = Gson().fromJson(req.body(), UserVote::class.java)
+            val userVote =
+                req.json<UserVote>(Deserializer(LocalDateTime::class) { el, _, _ -> LocalDateTime.parse(el.asString) })
+
             addVoteUseCase.execute(userVote)
 
             res.status(201)
@@ -41,8 +44,5 @@ class HappinessHandler(
         }
     }
 
-    data class VotesResponse(
-        val votes: List<Vote>
-    )
+    data class VotesResponse(val votes: List<UserVote>)
 }
-

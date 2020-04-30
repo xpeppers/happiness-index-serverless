@@ -1,10 +1,12 @@
 package happiness.getvotes
 
+import happiness.addvote.UserVote
 import happiness.addvote.Votes
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import java.time.LocalDateTime.parse
 
 class GetHappinessVotesUseCaseTest {
 
@@ -14,13 +16,17 @@ class GetHappinessVotesUseCaseTest {
     @Test
     fun `get all votes`() {
         every { votes.all() } returns listOf(
-            Vote(3),
-            Vote(1),
-            Vote(1)
+            UserVote(vote = 1, date = parse("2011-03-02T11:23:00"), location = "any", userId = "any"),
+            UserVote(vote = 1, date = parse("2011-03-03T12:25:00"), location = "any", userId = "any"),
+            UserVote(vote = 3, date = parse("2011-04-02T13:00:00"), location = "any", userId = "any")
         )
 
         val allVotes = getHappinessVotes.execute()
 
-        assertThat(allVotes).containsExactlyInAnyOrder(Vote(1), Vote(1), Vote(3))
+        assertThat(allVotes).containsExactlyInAnyOrder(
+            UserVote(vote = 1, date = parse("2011-03-02T11:23:00"), location = "any", userId = "any"),
+            UserVote(vote = 1, date = parse("2011-03-03T12:25:00"), location = "any", userId = "any"),
+            UserVote(vote = 3, date = parse("2011-04-02T13:00:00"), location = "any", userId = "any")
+        )
     }
 }

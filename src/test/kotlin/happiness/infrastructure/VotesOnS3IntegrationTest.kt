@@ -1,10 +1,8 @@
 import happiness.addvote.UserVote
-import happiness.getvotes.Vote
 import happiness.infrastructure.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import software.amazon.awssdk.services.s3.S3Client
-import java.time.LocalDateTime
 import java.time.LocalDateTime.parse
 import java.util.*
 
@@ -41,7 +39,7 @@ class VotesOnS3IntegrationTest {
         votesOnS3.add(UserVote(vote = 1, userId = "1234", location = "MI", date = parse("2020-01-01T12:00:00")))
         votesOnS3.add(UserVote(vote = 4, userId = "1234", location = "MI", date = parse("2011-03-02T00:00:00")))
 
-        val votes = votesOnS3.all2()
+        val votes = votesOnS3.all()
 
         assertThat(votes).containsExactly(
             UserVote(vote = 1, date = parse("2020-01-01T12:00:00"), userId = "", location = ""),
