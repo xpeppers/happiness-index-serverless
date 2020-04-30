@@ -12,16 +12,15 @@ class VotesOnS3(private val bucketName: String, private val keyName: String) : V
 
     override fun add(vote: UserVote) {
         val existingVotes = s3.readFromBucket(bucketName, keyName)
-        val newVotes = existingVotes.plus("${vote.date.format(ISO_DATE_TIME)};${vote.vote}")
+        val newVotes = existingVotes.plus(vote.toRecord())
 
         s3.writeToBucket(bucketName, keyName, newVotes.joinToString("\n"))
     }
 
     override fun all(): List<UserVote> = s3
         .readFromBucket(bucketName, keyName)
-        .map {
-            val (date, vote) = it.split(";")
-            UserVote(vote = vote.toInt(), date = parse(date), userId = "", location = "")
-        }
-
+        .map { voteRecord -> voteRecord.split(";") }
+        .map { (date, vote) -> UserVote(vote = vote.toInt(), date = parse(date), userId = "", location = "") }
 }
+
+private fun UserVote.toRecord() = "${date.format(ISO_DATE_TIME)};${vote}"
