@@ -27,16 +27,14 @@ class HappinessHandler(
     override fun LambdaCall.routing() {
         exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }
         post("/happiness") { req, res ->
-            val userVote =
-                req.json<UserVote>(Deserializer(LocalDateTime::class) { el, _, _ -> LocalDateTime.parse(el.asString) })
-
+            val userVote = req.json<UserVote>(dateDeserializer())
             addVoteUseCase.execute(userVote)
 
             res.status(201)
             res.write("Thanks for voting :D")
         }
 
-        get("/happiness/votes") { req, res ->
+        get("/happiness/votes") { _, res ->
             val votes = getVotesUseCase.execute()
 
             res.status(200)
@@ -44,5 +42,8 @@ class HappinessHandler(
         }
     }
 
-    data class VotesResponse(val votes: List<UserVote>)
+    private fun dateDeserializer() =
+        Deserializer(LocalDateTime::class) { element, _, _ -> LocalDateTime.parse(element.asString) }
+
+    private data class VotesResponse(val votes: List<UserVote>)
 }
