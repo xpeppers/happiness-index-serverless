@@ -35,8 +35,8 @@ class HappinessVoteAcceptanceTest {
 
         val anotherUserVote = """{ 
             "vote": 3,
-            "userId": "1234",
-            "location": "MI",
+            "userId": "4422",
+            "location": "RM",
             "date":"2020-03-02T13:23:00"
         }            
         """
@@ -47,6 +47,8 @@ class HappinessVoteAcceptanceTest {
         get("$BASE_URL/happiness/votes")
             .body("votes.vote", hasItems(1, 3))
             .body("votes.date", hasItems("2020-03-03T15:13:10", "2020-03-02T13:23:00"))
+            .body("votes.userId", hasItems("1234", "4422"))
+            .body("votes.location", hasItems("MI", "RM"))
     }
 
     private fun post(url: String, json: String): String? {

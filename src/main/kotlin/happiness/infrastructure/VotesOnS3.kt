@@ -20,7 +20,14 @@ class VotesOnS3(private val bucketName: String, private val keyName: String) : V
     override fun all(): List<UserVote> = s3
         .readFromBucket(bucketName, keyName)
         .map { voteRecord -> voteRecord.split(";") }
-        .map { (date, vote) -> UserVote(vote = vote.toInt(), date = parse(date), userId = "", location = "") }
+        .map { (date, vote, userId, location) ->
+            UserVote(
+                vote = vote.toInt(),
+                date = parse(date),
+                userId = userId,
+                location = location
+            )
+        }
 }
 
-private fun UserVote.toRecord() = "${date.format(ISO_DATE_TIME)};${vote}"
+private fun UserVote.toRecord() = "${date.format(ISO_DATE_TIME)};${vote};${userId};${location}"
