@@ -1,6 +1,6 @@
 ## TODO
 
-* [DOING] estendere la chiamata di add e l'oggetto vote in modo che accetti autore, data e sede
+* [DOING] quando voto aggiungo anche userid, location e data
 
 #### HTTP
 
@@ -25,8 +25,8 @@
  ...
 ```
 
-- [DOING] la date di default di `UserVote` non sembra funzionare quando devo deserializzare un JSON che non la
- contiene... (provare Jackson?)
+- ~~la date di default di `UserVote` non funziona quando devo deserializzare un JSON che non la
+ contiene...~~ (da migliorare però!) 
 - in `exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }` dovremmo rilanciare l'errore?
 - output dei test è inutilmente verboso (awssdk logga troppo!)
 - arricchire AT HappinessVoteAcceptanceTest

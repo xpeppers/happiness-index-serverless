@@ -30,7 +30,8 @@ class HappinessHandler(
     override fun LambdaCall.routing() {
         exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }
         post("/happiness") { request, response ->
-            val userVote = request.json<UserVote>(dateDeserializer())
+            val userVoteRequest = request.json<UserVoteRequest>(dateDeserializer())
+            val userVote = mapFrom(userVoteRequest)
             addVoteUseCase.execute(userVote)
 
             response.status(201)
@@ -45,6 +46,15 @@ class HappinessHandler(
         }
     }
 
+    private fun mapFrom(userVoteRequest: UserVoteRequest): UserVote {
+        return UserVote(
+            userVoteRequest.vote,
+            userVoteRequest.userId,
+            userVoteRequest.location,
+            userVoteRequest.date ?: LocalDateTime.now()
+        )
+    }
+
     private fun dateSerializer(): Serializer<LocalDateTime> {
         return Serializer(LocalDateTime::class) { date: LocalDateTime, _, _ -> JsonPrimitive(date.format(ISO_DATE_TIME)) }
     }
@@ -53,4 +63,13 @@ class HappinessHandler(
         Deserializer(LocalDateTime::class) { element, _, _ -> LocalDateTime.parse(element.asString) }
 
     private data class VotesResponse(val votes: List<UserVote>)
+
+    internal data class UserVoteRequest(
+        val vote: Int,
+        val userId: String,
+        val location: String,
+        val date: LocalDateTime?
+    )
 }
+
+
