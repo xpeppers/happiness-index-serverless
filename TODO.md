@@ -1,6 +1,6 @@
 ## TODO
 
-* [ ] `WIP=>` :rocket: estendere la chiamata di add e l'oggetto vote in modo che accetti autore, data e sede
+* [DOING] estendere la chiamata di add e l'oggetto vote in modo che accetti autore, data e sede
 
 #### HTTP
 
@@ -19,28 +19,29 @@
 
 ```
  ...
- <data>,<vote>,<user-id>,<location-id>\n
- <data>,<vote>,<user-id>,<location-id>\n
- <data>,<vote>,<user-id>,<location-id>\n
+ <data>;<vote>;<user-id>;<location-id>\n
+ <data>;<vote>;<user-id>;<location-id>\n
+ <data>;<vote>;<user-id>;<location-id>\n
  ...
 ```
 
-- ~~modificare la getVotes in mode che torni tutti i dati del voto, non solo il numero e la data~~
-* la date di default di `UserVote` non sembra funzionare quando devo deserializzare un JSON che non la contiene... (provare Jackson?)
-* in `exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }` dovremmo rilanciare l'errore?
-* output dei test è inutilmente verboso (awssdk logga troppo!)
-* ~~`VotesOnS3.all()` più idiomatica?~~
-* ~~rimuovere la all vecchia e sostituirla con la all2~~
-* salvare anche location e user
-* ~~deserializzare correttamente la data~~
-* arricchire AT HappinessVoteAcceptanceTest
-- ~~modificare `VotesOnS3` in modo che persista anche user, location e date~~
+- [DOING] la date di default di `UserVote` non sembra funzionare quando devo deserializzare un JSON che non la
+ contiene... (provare Jackson?)
+- in `exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }` dovremmo rilanciare l'errore?
+- output dei test è inutilmente verboso (awssdk logga troppo!)
+- arricchire AT HappinessVoteAcceptanceTest
+- ~~`VotesOnS3.all()` più idiomatica?~~
 - ???: il voto è sempre numerico?
+- perché non passa il test di integrazione su S3 se lo lancio da IDEA?
+- come posso fare per lanciare i test da IDEA in modo che prenda l'utente xpeppers-develop con STS?
+- PRIVACY: ma lo userid non viola la privacy? 
 
-* perché non passa il test di integrazione su S3 se lo lancio da IDEA?
-* come posso fare per lanciare i test da IDEA in modo che prenda l'utente xpeppers-develop con STS?
+- ~~salvare anche location e user~~
+- ~~rimuovere la all vecchia e sostituirla con la all2~~
+- ~~deserializzare correttamente la data~~
+- ~~modificare `VotesOnS3` in modo che persista anche user, location e date~~
+- ~~modificare la getVotes in mode che torni tutti i dati del voto, non solo il numero e la data~~
 
-* PRIVACY: ma lo userid non viola la privacy? 
 * [ ] :rocket: aggungere query nella chiamata getvotes: filtrare per sede e ottenere i voti dati in un determinato span temporale
 * [ ] :rocket: report sull'happiness delle persone: aggiungere un sito statico (usando bucket s3?) che mostra rudimentalmente i voti querati
 * [ ] sostituire il sistema di persistenza con qualcosa in grado di gestire la concorrenza (dynamo? fauna?)
