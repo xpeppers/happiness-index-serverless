@@ -27,6 +27,7 @@
 
 - ~~la date di default di `UserVote` non funziona quando devo deserializzare un JSON che non la
  contiene...~~ (da migliorare però!) 
+- creare un test in caso ci arrivi il voto senza data
 - in `exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }` dovremmo rilanciare l'errore?
 - output dei test è inutilmente verboso (awssdk logga troppo!)
 - arricchire AT HappinessVoteAcceptanceTest
