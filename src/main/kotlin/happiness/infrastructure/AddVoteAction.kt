@@ -16,30 +16,21 @@ class AddVoteAction(
 ) : RouteAction {
 
     override fun handle(request: Request, response: Response, context: Context) {
+        val userVote = request.json<UserVote>(userVoteDeserializer())
 
-        val userVoteRequest = request.json<UserVoteRequest>(dateDeserializer())
-        val userVote = mapFrom(userVoteRequest)
         addVoteUseCase.execute(userVote)
 
         response.status(201)
         response.write("Thanks for voting :D")
     }
 
-    private fun dateDeserializer() =
-        Deserializer(LocalDateTime::class) { element, _, _ -> LocalDateTime.parse(element.asString) }
-
-    internal data class UserVoteRequest(
-        val vote: Int,
-        val userId: String,
-        val location: String,
-        val date: LocalDateTime?
-    )
-
-    private fun mapFrom(userVoteRequest: UserVoteRequest) =
+    private fun userVoteDeserializer() = Deserializer(UserVote::class) { element, _, _ ->
+        val jsonObject = element.asJsonObject
         UserVote(
-            userVoteRequest.vote,
-            userVoteRequest.userId,
-            userVoteRequest.location,
-            userVoteRequest.date ?: clock.now()
+            jsonObject.get("vote").asInt,
+            jsonObject.get("userId").asString,
+            jsonObject.get("location").asString,
+            jsonObject.get("date")?.let { LocalDateTime.parse(it.asString) } ?: clock.now()
         )
+    }
 }
