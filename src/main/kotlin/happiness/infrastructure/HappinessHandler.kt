@@ -28,7 +28,7 @@ class HappinessHandler(
 ) : HttpHandler() {
     override fun LambdaCall.routing() {
         exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }
-        post("/happiness", AddVoteAction(addVoteUseCase))
+        post("/happiness", AddVoteAction(addVoteUseCase, RealClock()))
 
         get("/happiness/votes") { _, response ->
             val votes = getVotesUseCase.execute()

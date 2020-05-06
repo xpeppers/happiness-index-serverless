@@ -10,7 +10,10 @@ import happiness.addvote.AddHappinessVoteUseCase
 import happiness.addvote.UserVote
 import java.time.LocalDateTime
 
-class AddVoteAction(private val addVoteUseCase: AddHappinessVoteUseCase) : RouteAction {
+class AddVoteAction(
+    private val addVoteUseCase: AddHappinessVoteUseCase,
+    private val clock: Clock
+) : RouteAction {
 
     override fun handle(request: Request, response: Response, context: Context) {
 
@@ -32,10 +35,11 @@ class AddVoteAction(private val addVoteUseCase: AddHappinessVoteUseCase) : Route
         val date: LocalDateTime?
     )
 
-    private fun mapFrom(userVoteRequest: UserVoteRequest): UserVote = UserVote(
-        userVoteRequest.vote,
-        userVoteRequest.userId,
-        userVoteRequest.location,
-        userVoteRequest.date ?: LocalDateTime.now()
-    )
+    private fun mapFrom(userVoteRequest: UserVoteRequest) =
+        UserVote(
+            userVoteRequest.vote,
+            userVoteRequest.userId,
+            userVoteRequest.location,
+            userVoteRequest.date ?: clock.now()
+        )
 }
