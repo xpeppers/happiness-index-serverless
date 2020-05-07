@@ -1,4 +1,4 @@
-package happiness.addvote
+package happiness
 
 import io.mockk.*
 import org.junit.jupiter.api.Test

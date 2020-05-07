@@ -1,4 +1,4 @@
-package happiness.addvote
+package happiness
 
 import java.time.LocalDateTime
 

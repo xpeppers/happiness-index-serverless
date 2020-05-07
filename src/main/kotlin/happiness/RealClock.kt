@@ -1,4 +1,4 @@
-package happiness.infrastructure
+package happiness
 
 import java.time.LocalDateTime
 

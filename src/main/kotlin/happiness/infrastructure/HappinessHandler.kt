@@ -5,9 +5,10 @@ import daikon.gson.Serializer
 import daikon.gson.json
 import daikon.lambda.HttpHandler
 import daikon.lambda.LambdaCall
-import happiness.addvote.AddHappinessVoteUseCase
-import happiness.addvote.UserVote
-import happiness.getvotes.GetHappinessVotesUseCase
+import happiness.AddHappinessVoteUseCase
+import happiness.GetHappinessVotesUseCase
+import happiness.RealClock
+import happiness.UserVote
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter.ISO_DATE_TIME
 

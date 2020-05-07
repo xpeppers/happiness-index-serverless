@@ -1,7 +1,7 @@
 package happiness.infrastructure
 
-import happiness.addvote.UserVote
-import happiness.addvote.Votes
+import happiness.UserVote
+import happiness.Votes
 import software.amazon.awssdk.services.s3.S3Client
 import java.time.LocalDateTime.parse
 import java.time.format.DateTimeFormatter.ISO_DATE_TIME

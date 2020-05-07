@@ -6,8 +6,9 @@ import daikon.core.Response
 import daikon.core.RouteAction
 import daikon.gson.Deserializer
 import daikon.gson.json
-import happiness.addvote.AddHappinessVoteUseCase
-import happiness.addvote.UserVote
+import happiness.AddHappinessVoteUseCase
+import happiness.Clock
+import happiness.UserVote
 import java.time.LocalDateTime
 
 class AddVoteAction(
