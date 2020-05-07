@@ -24,26 +24,30 @@
  <data>;<vote>;<user-id>;<location-id>\n
  ...
 ```
+* [ ] :rocket: aggungere query nella chiamata getvotes: filtrare per sede e ottenere i voti dati in un determinato span temporale
+-- 
 
-- ~~la date di default di `UserVote` non funziona quando devo deserializzare un JSON che non la
- contiene...~~ (da migliorare però!) 
-- creare un test in caso ci arrivi il voto senza data
+
 - in `exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }` dovremmo rilanciare l'errore?
 - output dei test è inutilmente verboso (awssdk logga troppo!)
 - arricchire AT HappinessVoteAcceptanceTest
-- ~~`VotesOnS3.all()` più idiomatica?~~
+
 - ???: il voto è sempre numerico?
 - perché non passa il test di integrazione su S3 se lo lancio da IDEA?
 - come posso fare per lanciare i test da IDEA in modo che prenda l'utente xpeppers-develop con STS?
 - PRIVACY: ma lo userid non viola la privacy? 
 
+- ~~VotesOnS3.all() più idiomatica?~~
+- ~~la date di default di `UserVote` non funziona quando devo deserializzare un JSON che non la
+  ~~contiene...(da migliorare però!)~~
+- ~~creare un test in caso ci arrivi il voto senza data~~
 - ~~salvare anche location e user~~
 - ~~rimuovere la all vecchia e sostituirla con la all2~~
 - ~~deserializzare correttamente la data~~
 - ~~modificare `VotesOnS3` in modo che persista anche user, location e date~~
 - ~~modificare la getVotes in mode che torni tutti i dati del voto, non solo il numero e la data~~
 
-* [ ] :rocket: aggungere query nella chiamata getvotes: filtrare per sede e ottenere i voti dati in un determinato span temporale
+
 * [ ] :rocket: report sull'happiness delle persone: aggiungere un sito statico (usando bucket s3?) che mostra rudimentalmente i voti querati
 * [ ] sostituire il sistema di persistenza con qualcosa in grado di gestire la concorrenza (dynamo? fauna?)
     * [ ] spike su VotesOnDynamoDB
