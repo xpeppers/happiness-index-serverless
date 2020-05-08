@@ -1,16 +1,10 @@
 package happiness.infrastructure
 
-import com.google.gson.JsonPrimitive
-import daikon.gson.Serializer
-import daikon.gson.json
 import daikon.lambda.HttpHandler
 import daikon.lambda.LambdaCall
 import happiness.AddHappinessVoteUseCase
 import happiness.GetHappinessVotesUseCase
 import happiness.RealClock
-import happiness.UserVote
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter.ISO_DATE_TIME
 
 val BUCKET_NAME: String = System.getenv("HAPPINESS_BUCKET_NAME")
 const val KEY_NAME = "votes"
@@ -30,20 +24,8 @@ class HappinessHandler(
     override fun LambdaCall.routing() {
         exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }
         post("/happiness", AddVoteAction(addVoteUseCase, RealClock()))
-
-        get("/happiness/votes") { _, response ->
-            val votes = getVotesUseCase.execute()
-
-            response.status(200)
-            response.json(VotesResponse(votes), dateSerializer())
-        }
+        get("/happiness/votes", GetVotesAction(getVotesUseCase))
     }
-
-    private fun dateSerializer(): Serializer<LocalDateTime> {
-        return Serializer(LocalDateTime::class) { date: LocalDateTime, _, _ -> JsonPrimitive(date.format(ISO_DATE_TIME)) }
-    }
-
-    private data class VotesResponse(val votes: List<UserVote>)
 }
 
 
