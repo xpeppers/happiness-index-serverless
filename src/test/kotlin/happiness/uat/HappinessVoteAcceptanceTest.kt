@@ -8,7 +8,9 @@ import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.response.ValidatableResponse
 import org.hamcrest.Matchers.hasItems
+import org.hamcrest.Matchers.not
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import software.amazon.awssdk.services.s3.S3Client
@@ -49,6 +51,34 @@ class HappinessVoteAcceptanceTest {
             .body("votes.date", hasItems("2020-03-03T15:13:10", "2020-03-02T13:23:00"))
             .body("votes.userId", hasItems("1234", "4422"))
             .body("votes.location", hasItems("MI", "RM"))
+    }
+
+    @Test
+    @Disabled
+    fun `we can search all votes in given time range`() {
+        addVotes(
+            """{ 
+                    "vote": 1,
+                    "userId": "1234",
+                    "location": "MI",
+                    "date":"2020-03-03T15:13:10"
+                }            
+        """, """{ 
+                    "vote": 3,
+                    "userId": "4422",
+                    "location": "RM",
+                    "date":"2020-03-02T13:23:00"
+                }            
+        """
+        )
+
+        get("$BASE_URL/happiness/votes?from=2020-03-03&to=2020-03-03")
+            .body("votes.vote", not(hasItems(3)))
+            .body("votes.vote", hasItems(1))
+    }
+
+    private fun addVotes(vararg userVotes: String) {
+        userVotes.forEach { post("$BASE_URL/happiness", it) shouldBe "Thanks for voting :D" }
     }
 
     private fun post(url: String, json: String): String? {
