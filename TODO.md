@@ -27,6 +27,8 @@
 * [ ] :rocket: aggungere query nella chiamata getvotes: filtrare per sede e ottenere i voti dati in un determinato span temporale
 -- 
 
+* CI: costruire uno script di build (unit, integration, deploy, acceptance, deploy prod)
+    - smoke test: `curl -v  https://g49lpxwuhd.execute-api.eu-west-1.amazonaws.com/dev/happiness/votes | jq`
 
 - in `exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }` dovremmo rilanciare l'errore?
 - output dei test è inutilmente verboso (awssdk logga troppo!)
@@ -63,9 +65,7 @@
 * [ ] suddividere ambiente dev da ambiente prod (vedi anche come hanno fatto quelli di timetableless)
 
 * [ ] integrare le API con un bot Slack / Telegram o anche via CLI
-* 
-* CI: costruire uno script di build (unit, integration, deploy, acceptance, deploy prod)
-    - smoke test: `curl -v  https://g49lpxwuhd.execute-api.eu-west-1.amazonaws.com/dev/happiness/votes | jq`
+
 ---
 
 * estrarre nome della key dove sono salvati i nomi (classe di configurazione?)

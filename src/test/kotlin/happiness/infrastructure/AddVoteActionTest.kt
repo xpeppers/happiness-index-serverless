@@ -1,6 +1,5 @@
 package happiness.infrastructure
 
-import daikon.core.Context
 import daikon.core.Request
 import daikon.core.Response
 import happiness.AddHappinessVoteUseCase
@@ -28,7 +27,7 @@ class AddVoteActionTest {
         every { addVoteUseCase.execute(any()) } just Runs
         every { request.body() } returns jsonRequest
 
-        AddVoteAction(addVoteUseCase, FakeClock("1999-12-00T53:42:22")).handle(request, response, dummyContext())
+        AddVoteAction(addVoteUseCase, FakeClock("1999-12-00T53:42:22")).handle(request, response, DummyContext())
 
         verify {
             addVoteUseCase.execute(
@@ -53,7 +52,7 @@ class AddVoteActionTest {
         every { addVoteUseCase.execute(any()) } just Runs
         every { request.body() } returns jsonRequest
 
-        AddVoteAction(addVoteUseCase, FakeClock("1496-12-02T02:11:01")).handle(request, response, dummyContext())
+        AddVoteAction(addVoteUseCase, FakeClock("1496-12-02T02:11:01")).handle(request, response, DummyContext())
 
         verify {
             addVoteUseCase.execute(
@@ -64,15 +63,6 @@ class AddVoteActionTest {
                     parse("1496-12-02T02:11:01")
                 )
             )
-        }
-    }
-
-    private fun dummyContext(): Context {
-        return object : Context {
-            override fun addAttribute(key: String, value: Any) {}
-            override fun <T> getAttribute(key: String): T {
-                throw NotImplementedError()
-            }
         }
     }
 }
