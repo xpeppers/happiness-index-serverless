@@ -12,14 +12,14 @@ import happiness.UserVote
 import java.time.LocalDateTime
 
 class AddVoteAction(
-    private val addVoteUseCase: AddHappinessVoteUseCase,
+    private val addVote: AddHappinessVoteUseCase,
     private val clock: Clock
 ) : RouteAction {
 
     override fun handle(request: Request, response: Response, context: Context) {
         val userVote = request.json<UserVote>(userVoteDeserializer())
 
-        addVoteUseCase.execute(userVote)
+        addVote.execute(userVote)
 
         response.status(201)
         response.write("Thanks for voting :D")

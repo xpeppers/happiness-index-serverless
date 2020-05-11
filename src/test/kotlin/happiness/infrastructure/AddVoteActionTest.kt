@@ -31,12 +31,7 @@ class AddVoteActionTest {
 
         verify {
             addVoteUseCase.execute(
-                UserVote(
-                    3,
-                    "4422",
-                    "RM",
-                    parse("2020-03-02T13:23:00")
-                )
+                UserVote(3, "4422", "RM", parse("2020-03-02T13:23:00"))
             )
         }
     }
@@ -56,12 +51,7 @@ class AddVoteActionTest {
 
         verify {
             addVoteUseCase.execute(
-                UserVote(
-                    3,
-                    "4422",
-                    "RM",
-                    parse("1496-12-02T02:11:01")
-                )
+                UserVote(3, "4422", "RM", parse("1496-12-02T02:11:01"))
             )
         }
     }

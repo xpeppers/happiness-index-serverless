@@ -13,9 +13,9 @@ import happiness.UserVote
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class GetVotesAction(private val votesUseCase: GetHappinessVotesUseCase) : RouteAction {
+class GetVotesAction(private val getVotes: GetHappinessVotesUseCase) : RouteAction {
     override fun handle(request: Request, response: Response, context: Context) {
-        val votes = votesUseCase.execute(
+        val votes = getVotes.execute(
             SearchCriteria(fromDate = request.param("from"), toDate = request.param("to"))
         )
 

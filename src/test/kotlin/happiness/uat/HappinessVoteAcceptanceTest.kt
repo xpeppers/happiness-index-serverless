@@ -102,6 +102,4 @@ class HappinessVoteAcceptanceTest {
             .and()
             .contentType(ContentType.JSON)
     }
-
-
 }
