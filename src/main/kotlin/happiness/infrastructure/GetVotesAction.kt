@@ -8,13 +8,16 @@ import daikon.core.RouteAction
 import daikon.gson.Serializer
 import daikon.gson.json
 import happiness.GetHappinessVotesUseCase
+import happiness.SearchCriteria
 import happiness.UserVote
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class GetVotesAction(private val votesUseCase: GetHappinessVotesUseCase) : RouteAction {
     override fun handle(request: Request, response: Response, context: Context) {
-        val votes = votesUseCase.execute()
+        val votes = votesUseCase.execute(
+            SearchCriteria(fromDate = request.param("from"), toDate = request.param("to"))
+        )
 
         response.status(200)
         response.json(VotesResponse(votes), dateSerializer())
