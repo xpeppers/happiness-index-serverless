@@ -1,70 +1,38 @@
 ## TODO
 
-* [DOING] quando voto aggiungo anche userid, location e data
-
-#### HTTP
-
-`POST /votes/<vote>`
-
-`POST /votes/`
-```json= 
-{
-    "vote": <vote>,
-    "user": "<user-id>",
-    "location": "<location-id>"
-}
-```
-
-#### on S3:
-
-```
- ...
- <data>;<vote>;<user-id>;<location-id>\n
- <data>;<vote>;<user-id>;<location-id>\n
- <data>;<vote>;<user-id>;<location-id>\n
- ...
-```
 * [ ] :rocket: aggungere query nella chiamata getvotes: filtrare per sede e ottenere i voti dati in un determinato span temporale
--- 
 
 * CI: costruire uno script di build (unit, integration, deploy, acceptance, deploy prod)
     - smoke test: `curl -v  https://g49lpxwuhd.execute-api.eu-west-1.amazonaws.com/dev/happiness/votes | jq`
+
+* [ ] suddividere ambiente dev da ambiente prod (vedi anche come hanno fatto quelli di timetableless)
+
+* [ ] :rocket: report sull'happiness delle persone: aggiungere un sito statico (usando bucket s3?) che mostra rudimentalmente i voti querati
+
+* [ ] sostituire il sistema di persistenza con qualcosa in grado di gestire la concorrenza (dynamo? fauna?)
+    * [ ] spike su VotesOnDynamoDB
+    * [ ] spike su VotesOnFaunaDB
 
 - in `exception(Throwable::class.java) { _, _, t -> t.printStackTrace() }` dovremmo rilanciare l'errore?
 - output dei test è inutilmente verboso (awssdk logga troppo!)
 - arricchire AT HappinessVoteAcceptanceTest
 
-- ???: il voto è sempre numerico?
-- perché non passa il test di integrazione su S3 se lo lancio da IDEA?
 - come posso fare per lanciare i test da IDEA in modo che prenda l'utente xpeppers-develop con STS?
-- PRIVACY: ma lo userid non viola la privacy? 
 
-- ~~VotesOnS3.all() più idiomatica?~~
-- ~~la date di default di `UserVote` non funziona quando devo deserializzare un JSON che non la
-  ~~contiene...(da migliorare però!)~~
-- ~~creare un test in caso ci arrivi il voto senza data~~
-- ~~salvare anche location e user~~
-- ~~rimuovere la all vecchia e sostituirla con la all2~~
-- ~~deserializzare correttamente la data~~
-- ~~modificare `VotesOnS3` in modo che persista anche user, location e date~~
-- ~~modificare la getVotes in mode che torni tutti i dati del voto, non solo il numero e la data~~
-
-
-* [ ] :rocket: report sull'happiness delle persone: aggiungere un sito statico (usando bucket s3?) che mostra rudimentalmente i voti querati
-* [ ] sostituire il sistema di persistenza con qualcosa in grado di gestire la concorrenza (dynamo? fauna?)
-    * [ ] spike su VotesOnDynamoDB
-    * [ ] spike su VotesOnFaunaDB
-* [ ] :rocket: l'utente puo' aggiungere un suo commento sulla giornata (con una nuova chiamata?)
-* [ ] :rocket: aggiungere constaint di un solo voto al giorno per autore e dopo le 18
-* [ ] :rocket: sostituire il voto numerico con le faccine
-* [ ] :rocket: migliorare la grafica del sito con grafici, datapicker...
 * ispirarci a timetableless: https://github.com/txpeppers/timetableless
   * l'uso delle variabili d'ambiente impostate nel serverlessyml 
-  * [x] ~~la creazione del bucket~~
+ 
 * [ ] rimuovere duplicazione tra applicazione e configurazione yaml (con variabili d'ambiente?)
-* [ ] suddividere ambiente dev da ambiente prod (vedi anche come hanno fatto quelli di timetableless)
 
 * [ ] integrare le API con un bot Slack / Telegram o anche via CLI
+
+* [ ] :rocket: l'utente puo' aggiungere un suo commento sulla giornata (con una nuova chiamata?)
+* [ ] :rocket: aggiungere constraint di un solo voto al giorno per autore e dopo le 18
+* [ ] :rocket: sostituire il voto numerico con le faccine
+* [ ] :rocket: migliorare la grafica del sito con grafici, datapicker...
+
+- ???: il voto è sempre numerico?
+- PRIVACY: ma lo userid non viola la privacy? 
 
 ---
 
@@ -72,8 +40,6 @@
 * dobbiamo resettare il bucket ogni volta che lanciamo la suite di test?
 * SPIKE: fare un porting su Kotless https://github.com/JetBrains/kotless
 * aggiornando alla ultima versione di AWS-SDK l'app non funziona per problemi di credenziali 2.12.0 (2.11.*)
-* ~~mio account vs tuo account~~
-* ~~il bucket deve già esistere o meno?~~
 
 
 ### useful docs
