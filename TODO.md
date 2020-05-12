@@ -1,9 +1,11 @@
 ## TODO
 
-* [DOING] :rocket: aggungere query nella chiamata getvotes: filtrare per sede e ottenere i voti dati in un determinato span temporale
+* [DOING] :rocket: aggiungere query nella chiamata getvotes: filtrare per sede e ottenere i voti dati in un determinato span temporale
 
 * CI: costruire uno script di build (unit, integration, deploy, acceptance, deploy prod)
     - smoke test: `curl -v  https://g49lpxwuhd.execute-api.eu-west-1.amazonaws.com/dev/happiness/votes | jq`
+    - su AWS?
+    - con GitHub Actions?
 
 * [ ] suddividere ambiente dev da ambiente prod (vedi anche come hanno fatto quelli di timetableless)
 
@@ -17,7 +19,7 @@
 
 - come posso fare per lanciare i test da IDEA in modo che prenda l'utente xpeppers-develop con STS?
 
-* ispirarci a timetableless: https://github.com/txpeppers/timetableless
+* ispirarci a timetableless: https://github.com/xpeppers/timetableless
   * l'uso delle variabili d'ambiente impostate nel serverlessyml 
  
 * [ ] rimuovere duplicazione tra applicazione e configurazione yaml (con variabili d'ambiente?)
