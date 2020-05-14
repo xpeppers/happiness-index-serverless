@@ -59,6 +59,16 @@ test {
     }
 }
 
+task acceptanceTest(type: Test) {
+    useJUnitPlatform()
+    include 'happiness/uat/**'
+}
+
+task unitTest(type: Test) {
+    useJUnitPlatform()
+    exclude 'happiness/uat/**'
+}
+
 task deploy(type: Exec, dependsOn: 'shadowJar') {
     commandLine 'serverless', 'deploy'
 }
