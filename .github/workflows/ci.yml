@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v2
     - name: install serverless
       run: npm install serverless
-    - uses: actions/checkout@v2
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -24,7 +24,7 @@ jobs:
     - name: deploy
       run: |
         ls -a
-        ./gradlew clean deploy --stacktrace
+        ./gradlew clean localDependencyDeploy --stacktrace
     - name: acceptance
       run: |
         ./gradlew clean acceptanceTest
