@@ -73,6 +73,10 @@ task deploy(type: Exec, dependsOn: 'shadowJar') {
     commandLine 'serverless', 'deploy'
 }
 
+task localDependencyDeploy(type: Exec, dependsOn: 'shadowJar') {
+    commandLine './node_modules/serverless/bin/serverless', 'deploy'
+}
+
 task remove(type: Exec) {
     commandLine 'serverless', 'remove'
 }

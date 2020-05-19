@@ -10,7 +10,7 @@ jobs:
 
     steps:
     - name: install serverless
-      run: npm install -g serverless
+      run: npm install serverless
     - uses: actions/checkout@v2
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -23,7 +23,7 @@ jobs:
         ./gradlew clean unitTest
     - name: deploy
       run: |
-        ./gradlew clean deploy
+        ./gradlew clean localDependencyDeploy
     - name: acceptance
       run: |
         ./gradlew clean acceptanceTest
