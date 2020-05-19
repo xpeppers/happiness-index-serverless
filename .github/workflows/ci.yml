@@ -24,7 +24,7 @@ jobs:
     - name: deploy
       run: |
         ls -a
-        ./gradlew clean localDependencyDeploy --stacktrace
+        ./gradlew clean deploy --stacktrace
     - name: acceptance
       run: |
         ./gradlew clean acceptanceTest
