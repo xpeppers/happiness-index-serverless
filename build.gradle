@@ -2,6 +2,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.72'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'com.github.ben-manes.versions' version '0.28.0'
+    id 'org.gradle.test-retry' version '1.0.0'
 }
 
 group = 'happiness-index'
@@ -62,6 +63,10 @@ test {
 task acceptanceTest(type: Test) {
     useJUnitPlatform()
     include 'happiness/uat/**'
+    retry {
+        failOnPassedAfterRetry = true
+        maxRetries = 5
+    }
 }
 
 task unitTest(type: Test) {
