@@ -10,7 +10,6 @@ import io.restassured.response.ValidatableResponse
 import org.hamcrest.Matchers.hasItems
 import org.hamcrest.Matchers.not
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import software.amazon.awssdk.services.s3.S3Client
@@ -54,7 +53,6 @@ class HappinessVoteAcceptanceTest {
     }
 
     @Test
-    @Disabled
     fun `we can search all votes in given time range`() {
         addVotes(
             """{ 

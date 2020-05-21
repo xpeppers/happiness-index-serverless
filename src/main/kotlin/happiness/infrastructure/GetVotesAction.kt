@@ -15,9 +15,13 @@ import java.time.format.DateTimeFormatter
 
 class GetVotesAction(private val getVotes: GetHappinessVotesUseCase) : RouteAction {
     override fun handle(request: Request, response: Response, context: Context) {
-        val votes = getVotes.execute(
-            SearchCriteria(fromDate = request.param("from"), toDate = request.param("to"))
-        )
+        val votes = when {
+            request.hasParam("from") && request.hasParam("to") ->
+                getVotes.execute(
+                    SearchCriteria(fromDate = request.param("from"), toDate = request.param("to"))
+                )
+            else -> getVotes.execute()
+        }
 
         response.status(200)
         response.json(VotesResponse(votes), dateSerializer())

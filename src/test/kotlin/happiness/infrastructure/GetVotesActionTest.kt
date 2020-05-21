@@ -19,6 +19,7 @@ class GetVotesActionTest {
 
     @Test
     fun `get the votes from the underlying use case`() {
+        every { request.hasParam(any()) } returns true
         every { request.param("from") } returns "2020-03-01"
         every { request.param("to") } returns "2020-03-05"
 
@@ -29,7 +30,7 @@ class GetVotesActionTest {
 
     @Test
     fun `renders the votes as json`() {
-        every { getVotesUseCase.execute(any()) } returns listOf(
+        every { getVotesUseCase.execute() } returns listOf(
             UserVote(vote = 4, date = LocalDateTime.parse("2020-03-02T11:23:00"), location = "any", userId = "any"),
             UserVote(vote = 1, date = LocalDateTime.parse("2012-04-05T14:23:00"), location = "any", userId = "any")
         )
