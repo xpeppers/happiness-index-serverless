@@ -16,4 +16,4 @@ jobs:
       run: ./gradlew clean unitTest -Pstage=prod
 
     - name: "PROD: deploy"
-      run: ./gradlew clean localDependencyDeploy --stacktrace -Pstage=PROD
+      run: ./gradlew clean localDependencyDeploy --stacktrace -Pstage=prod
