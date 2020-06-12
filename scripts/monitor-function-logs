@@ -1,0 +1,1 @@
+serverless logs -f happiness --stage $1
