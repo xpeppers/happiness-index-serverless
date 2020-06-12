@@ -1,0 +1,6 @@
+
+build_number=$1
+release=$2
+commit=$(git rev-list -n 1 build$build_number)
+git checkout $commit 
+git tag -a "release$release" -m "release number $release"

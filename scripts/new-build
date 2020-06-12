@@ -1,0 +1,12 @@
+
+#last_build=$(git describe --match="build[0-9]*" --abbrev=0)
+last_build=$(git describe --tags `git rev-list --tags --max-count=1`)
+current_build=${last_build:="build0"}
+current_build_number=${current_build//[!0-9]/}
+echo last build: $current_build
+echo last build number: $current_build_number
+progressive=$((current_build_number+1))
+echo progressive $progressive
+
+git tag -a "build$progressive" -m "build number $progressive"
+git push --tags
