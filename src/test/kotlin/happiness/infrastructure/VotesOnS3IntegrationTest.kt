@@ -16,18 +16,18 @@ class VotesOnS3IntegrationTest {
 
     @BeforeEach
     fun setUp() {
-        s3.createBucketIfNotExists(BUCKET_NAME)
-        s3.emptyBucketKey(BUCKET_NAME, KEY_NAME)
+        s3.createBucketIfNotExists(RANDOM_BUCKET_NAME)
+        s3.emptyBucketKey(RANDOM_BUCKET_NAME, ANY_KEY_NAME)
     }
 
     @AfterEach
     fun tearDown() {
-        s3.deleteBucket(BUCKET_NAME, KEY_NAME)
+        s3.deleteBucket(RANDOM_BUCKET_NAME, ANY_KEY_NAME)
     }
 
     @Test
     fun `append votes to s3 with date information`() {
-        val votesOnS3 = VotesOnS3(BUCKET_NAME, KEY_NAME)
+        val votesOnS3 = VotesOnS3(RANDOM_BUCKET_NAME, ANY_KEY_NAME)
         votesOnS3.add(
             UserVote(
                 vote = 1,
@@ -45,14 +45,14 @@ class VotesOnS3IntegrationTest {
             )
         )
 
-        val votes = s3.readFromBucket(BUCKET_NAME, KEY_NAME)
+        val votes = s3.readFromBucket(RANDOM_BUCKET_NAME, ANY_KEY_NAME)
         assertThat(votes).contains("2020-01-01T12:00:00;1;1234;MI")
         assertThat(votes).contains("2011-03-02T00:00:00;4;1234;MI")
     }
 
     @Test
     fun `get all votes on s3 with data information`() {
-        val votesOnS3 = VotesOnS3(BUCKET_NAME, KEY_NAME)
+        val votesOnS3 = VotesOnS3(RANDOM_BUCKET_NAME, ANY_KEY_NAME)
         votesOnS3.add(
             UserVote(
                 vote = 1,
@@ -89,7 +89,7 @@ class VotesOnS3IntegrationTest {
     }
 
     companion object {
-        private val BUCKET_NAME = "happiness-index-test-${UUID.randomUUID()}"
-        private const val KEY_NAME = "votes"
+        private val RANDOM_BUCKET_NAME = "happiness-index-test-${UUID.randomUUID()}"
+        private const val ANY_KEY_NAME = "votes"
     }
 }

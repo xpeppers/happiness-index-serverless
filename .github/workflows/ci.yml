@@ -10,21 +10,38 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: install serverless
+
+    - name: "install serverless"
       run: npm install serverless
-    - name: Configure AWS Credentials
+
+    - name: "Configure AWS Credentials"
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
-    - name: unit tests
+
+    - name: "DEV: unit tests"
+      run: ./gradlew clean unitTest
+
+    - name: "DEV: deploy"
+      run: ./gradlew clean localDependencyDeploy --stacktrace
+
+    - name: "DEV: acceptance"
+      run: ./gradlew clean acceptanceTest
+
+    - name: "PREPROD: unit tests"
+      run: ./gradlew clean unitTest -Pstage=preprod
+
+    - name: "PREPROD: deploy"
+      run: ./gradlew clean localDependencyDeploy --stacktrace -Pstage=preprod
+
+    - name: "PREPROD: acceptance"
+      run: ./gradlew clean acceptanceTest -Pstage=preprod
+
+    - name: add build number
       run: |
-        ./gradlew clean unitTest
-    - name: deploy
-      run: |
-        ls -a
-        ./gradlew clean localDependencyDeploy --stacktrace
-    - name: acceptance
-      run: |
-        ./gradlew clean acceptanceTest
+        git config --global user.name 'github actions'
+        git config --global user.email 'github@github.example'
+        git fetch --tags
+        ./scripts/new-build

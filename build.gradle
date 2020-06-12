@@ -52,7 +52,10 @@ tasks.withType(JavaCompile) {
 
 build.finalizedBy(shadowJar)
 
+String env = project.hasProperty('stage') ? project.property('stage') : 'dev'
+
 test {
+    println("#### ENVIRONMENT: " + env + " ####")
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
@@ -61,25 +64,35 @@ test {
 }
 
 task acceptanceTest(type: Test) {
+    environment('CURRENT_ENVIRONMENT', env)
     useJUnitPlatform()
     include 'happiness/uat/**'
     retry {
-        failOnPassedAfterRetry = true
+        failOnPassedAfterRetry = false
         maxRetries = 5
+    }
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = false
     }
 }
 
 task unitTest(type: Test) {
+    environment('CURRENT_ENVIRONMENT', env)
     useJUnitPlatform()
     exclude 'happiness/uat/**'
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = false
+    }
 }
 
 task deploy(type: Exec, dependsOn: 'shadowJar') {
-    commandLine 'serverless', 'deploy'
+    commandLine 'serverless', 'deploy', '--stage', env
 }
 
 task localDependencyDeploy(type: Exec, dependsOn: 'shadowJar') {
-    commandLine './node_modules/serverless/bin/serverless', 'deploy'
+    commandLine './node_modules/serverless/bin/serverless', 'deploy', '--stage', env
 }
 
 task remove(type: Exec) {

@@ -4,21 +4,19 @@ package:
   artifact: build/libs/happiness-index-dev-all.jar
 
 custom:
-  bucketName: happiness-index-temp
+  environment: ${file(./config/environment.json):${self:provider.stage}}
 
 provider:
   name: aws
   runtime: java11
-  stage: dev
+  stage: ${opt:stage, "dev"}
   region: eu-west-1
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - "s3:GetObject"
-        - "s3:ListBucket"
-        - "s3:PutObject"
+        - "s3:*"
       Resource:
-        - arn:aws:s3:::${self:custom.bucketName}/*
+        - arn:aws:s3:::${self:custom.environment.bucketName}/*
 
 functions:
   happiness:
@@ -28,11 +26,11 @@ functions:
           path: /{proxy+}
           method: ANY
     environment:
-      HAPPINESS_BUCKET_NAME: "happiness-index-temp"
+      HAPPINESS_BUCKET_NAME: ${self:custom.environment.bucketName}
 
 resources:
   Resources:
     HappinessBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:custom.bucketName}
+        BucketName: ${self:custom.environment.bucketName}

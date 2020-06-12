@@ -1,6 +1,7 @@
 package happiness.uat
 
-import happiness.BASE_URL
+import happiness.TEST_BASE_URL
+import happiness.TEST_BUCKET_NAME
 import happiness.infrastructure.KEY_NAME
 import happiness.infrastructure.emptyBucketKey
 import happiness.shouldBe
@@ -21,7 +22,7 @@ class HappinessVoteAcceptanceTest {
 
     @BeforeEach
     fun setUp() {
-        s3.emptyBucketKey("happiness-index-temp", KEY_NAME)
+        s3.emptyBucketKey(TEST_BUCKET_NAME, KEY_NAME)
     }
 
     @Test
@@ -33,7 +34,6 @@ class HappinessVoteAcceptanceTest {
             "date":"2020-03-03T15:13:10"
         }            
         """
-
         val anotherUserVote = """{ 
             "vote": 3,
             "userId": "4422",
@@ -42,10 +42,10 @@ class HappinessVoteAcceptanceTest {
         }            
         """
 
-        post("$BASE_URL/happiness", userVote) shouldBe "Thanks for voting :D"
-        post("$BASE_URL/happiness", anotherUserVote) shouldBe "Thanks for voting :D"
+        post("$TEST_BASE_URL/happiness", userVote) shouldBe "Thanks for voting :D"
+        post("$TEST_BASE_URL/happiness", anotherUserVote) shouldBe "Thanks for voting :D"
 
-        get("$BASE_URL/happiness/votes")
+        get("$TEST_BASE_URL/happiness/votes")
             .body("votes.vote", hasItems(1, 3))
             .body("votes.date", hasItems("2020-03-03T15:13:10", "2020-03-02T13:23:00"))
             .body("votes.userId", hasItems("1234", "4422"))
@@ -70,13 +70,13 @@ class HappinessVoteAcceptanceTest {
         """
         )
 
-        get("$BASE_URL/happiness/votes?from=2020-03-03&to=2020-03-03")
+        get("$TEST_BASE_URL/happiness/votes?from=2020-03-03&to=2020-03-03")
             .body("votes.vote", not(hasItems(3)))
             .body("votes.vote", hasItems(1))
     }
 
     private fun addVotes(vararg userVotes: String) {
-        userVotes.forEach { post("$BASE_URL/happiness", it) shouldBe "Thanks for voting :D" }
+        userVotes.forEach { post("$TEST_BASE_URL/happiness", it) shouldBe "Thanks for voting :D" }
     }
 
     private fun post(url: String, json: String): String? {
