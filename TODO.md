@@ -1,11 +1,16 @@
 ## TODO
 
-* [DOING] :rocket: aggiungere query nella chiamata getvotes: filtrare per sede e ottenere i voti dati in un determinato span temporale
-
-* CI: costruire uno script di build (unit, integration, deploy, acceptance, deploy prod)
+* [DOING] CI: costruire uno script di build (unit, integration, deploy, acceptance, deploy prod)
+    - separare gli ambienti: dev preprod prod
+    - - separare lanco dei test per ambiente 
+    - - usare bucket separati per ambiente
+    - - copiare il bucket di prod negli ambienti preliminari(?)
+    - GitHub Actions
+    - - configurare build.gradle con i diversi stage
+    - - creare script che crea i tag di success build
+    - - configurare ci.yaml per portare in prod i tag release
     - smoke test: `curl -v  https://g49lpxwuhd.execute-api.eu-west-1.amazonaws.com/dev/happiness/votes | jq`
-    - su AWS?
-    - con GitHub Actions?
+    
 
 * [ ] suddividere ambiente dev da ambiente prod (vedi anche come hanno fatto quelli di timetableless)
 
