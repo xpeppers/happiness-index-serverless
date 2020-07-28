@@ -1,0 +1,11 @@
+{
+    "files.exclude": {
+        "**/node_modules": true,
+        "**/build": true,
+        "**/.serverless": true,
+        "**/.idea": true,
+        "**/.project": true,
+        "**/elm-stuff": true, 
+        "**/package-lock.json": true, 
+        "**/.gradle": true
+}
