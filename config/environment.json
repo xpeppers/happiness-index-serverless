@@ -1,14 +1,17 @@
 {
   "dev": {
     "bucketName" : "happiness-index-ex3-dev",
+    "clientBucketName" : "happiness-index-client-dev",
     "baseUrl" : "https://g49lpxwuhd.execute-api.eu-west-1.amazonaws.com/dev"
   },
   "preprod": {
     "bucketName" : "happiness-index-ex2-preprod",
+    "clientBucketName" : "happiness-index-client-preprod",
     "baseUrl" : "https://6ft0i9nngf.execute-api.eu-west-1.amazonaws.com/preprod"
   },
   "prod": {
     "bucketName" : "happiness-index-ex2-prod",
+    "clientBucketName" : "happiness-index-client-prod",
     "baseUrl" : "https://asvfyzt8f4.execute-api.eu-west-1.amazonaws.com/prod"
   }
 }
