@@ -9,11 +9,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+
+    - name: "install serverless"
+      run: npm install serverless
+
+    - name: "install client dependencies"
+      run: ./gradlew installClientDependency
+
+    - name: "Configure AWS Credentials"
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-1
 
     - name: "PROD: unit tests"
       run: ./gradlew clean unitTest -Pstage=prod
+  
+    - name: "PROD: compile client"
+      run: ./gradlew compileClient -Pstage=prod
 
     - name: "PROD: deploy"
       run: ./gradlew clean localDependencyDeploy --stacktrace -Pstage=prod

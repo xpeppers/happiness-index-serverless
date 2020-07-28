@@ -12,7 +12,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: "install serverless"
-      run: npm install serverless
+      run: npm i
+
+    - name: "install client dependencies"
+      run: ./gradlew installClientDependency
 
     - name: "Configure AWS Credentials"
       uses: aws-actions/configure-aws-credentials@v1
@@ -24,6 +27,9 @@ jobs:
     - name: "DEV: unit tests"
       run: ./gradlew clean unitTest
 
+    - name: "DEV: compile client"
+      run: ./gradlew compileClient -Pstage=dev
+
     - name: "DEV: deploy"
       run: ./gradlew clean localDependencyDeploy --stacktrace
 
@@ -32,6 +38,9 @@ jobs:
 
     - name: "PREPROD: unit tests"
       run: ./gradlew clean unitTest -Pstage=preprod
+
+    - name: "PREPROD: compile client"
+      run: ./gradlew compileClient -Pstage=preprod
 
     - name: "PREPROD: deploy"
       run: ./gradlew clean localDependencyDeploy --stacktrace -Pstage=preprod

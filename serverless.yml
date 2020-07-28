@@ -4,6 +4,9 @@ package:
   artifact: build/libs/happiness-index-dev-all.jar
 
 custom:
+  s3Sync:
+    - bucketName: ${self:custom.environment.clientBucketName}
+      localDir: client/dist
   environment: ${file(./config/environment.json):${self:provider.stage}}
 
 provider:
@@ -34,3 +37,36 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.environment.bucketName}
+    StaticSite:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ${self:custom.environment.clientBucketName}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+        CorsConfiguration:
+          CorsRules:
+            - AllowedMethods:
+                - GET
+                - HEAD
+              AllowedOrigins:
+                - "*"
+              AllowedHeaders:
+                - "*"
+    StaticSiteS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: StaticSite
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+              - s3:GetObject
+              Resource:
+                Fn::Join: [ "", [ "arn:aws:s3:::", { "Ref": "StaticSite" }, "/*" ] ]
+
+plugins:
+  - serverless-s3-sync

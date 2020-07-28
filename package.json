@@ -1,0 +1,9 @@
+{
+  "name": "happiness-index-serverless",
+  "version": "1.0.0",
+  "main": "",
+  "devDependencies": {
+    "serverless": "^1.77.0",
+    "serverless-s3-sync": "^1.14.4"
+  }
+}

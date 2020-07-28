@@ -95,6 +95,24 @@ task localDependencyDeploy(type: Exec, dependsOn: 'shadowJar') {
     commandLine './node_modules/serverless/bin/serverless', 'deploy', '--stage', env
 }
 
+task installClientDependency(type: Exec) {
+    workingDir './client'
+    commandLine 'npm', 'i'
+}
+
+task compileClient {
+    doLast {
+        exec {
+            workingDir './client'
+            commandLine 'npm', '--stage=' + env, 'run', 'replaceEnv'
+        }
+        exec {
+            workingDir './client'
+            commandLine 'npm', 'run', 'compile'
+        }        
+    }
+}
+
 task remove(type: Exec) {
     commandLine 'serverless', 'remove'
 }
