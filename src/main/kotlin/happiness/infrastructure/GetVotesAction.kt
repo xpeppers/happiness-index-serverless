@@ -24,6 +24,7 @@ class GetVotesAction(private val getVotes: GetHappinessVotesUseCase) : RouteActi
         }
 
         response.status(200)
+        response.header("Access-Control-Allow-Origin", "*")
         response.json(VotesResponse(votes), dateSerializer())
     }
 

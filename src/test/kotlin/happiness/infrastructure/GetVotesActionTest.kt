@@ -38,6 +38,7 @@ class GetVotesActionTest {
         GetVotesAction(getVotesUseCase).handle(request, response, DummyContext())
 
         verify { response.status(200) }
+        verify { response.header("Access-Control-Allow-Origin", "*") }
         verify {
             response.write(
                 """{"votes":[""" +
