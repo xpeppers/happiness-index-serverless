@@ -1,1 +1,3 @@
-serverless logs -f happiness --stage $1
+STAGE=$1
+echo "Monitor environment: ${STAGE:="dev"}"
+serverless logs -f happiness --stage ${STAGE:="dev"}
