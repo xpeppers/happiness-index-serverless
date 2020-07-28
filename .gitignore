@@ -1,6 +1,14 @@
 .idea
 build
-node_modules/*
+node_modules
 .serverless
 .gradle
 out
+.classpath
+.project
+package-lock.json
+elm-stuff
+.settings
+bin
+.DS_Store
+**/dist/elm.js
